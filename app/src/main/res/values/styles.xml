@@ -1,9 +1,21 @@
 <resources>
 
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="AppTheme.Button" parent="Widget.AppCompat.Button.Borderless.Colored">
+        <item name="android:textColor">@color/colorPrimaryDark</item>
+        <item name="android:textSize">@dimen/button_text_size</item>
+        <item name="android:layout_margin">@dimen/button_layout_margin</item>
+        <item name="android:padding">@dimen/button_padding</item>
+        <item name="android:typeface">serif</item>
+        <item name="android:background">@drawable/buttons</item>
+    </style>
+
+    <style name="AppTheme.Layout">
+        <item name="android:background">@color/colorPrimaryDark</item>
+    </style>
 </resources>

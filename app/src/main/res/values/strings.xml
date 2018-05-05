@@ -3,7 +3,7 @@
     <string name="plus_button">+</string>
     <string name="clear_last_task_button">C</string>
     <string name="clear_last_char_button">L</string>
-    <string name="clear_all_tasks_buton">AC</string>
+    <string name="clear_all_tasks_button">AC</string>
     <string name="divide_button">/</string>
     <string name="seven_button">7</string>
     <string name="eight_button">8</string>
@@ -15,7 +15,7 @@
     <string name="one_button">1</string>
     <string name="two_button">2</string>
     <string name="three_button">3</string>
-    <string name="multiply_button">x</string>
+    <string name="multiply_button">*</string>
     <string name="percent_button">%</string>
     <string name="zero_button">0</string>
     <string name="dot_button">.</string>
