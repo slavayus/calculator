@@ -17,8 +17,7 @@ public class CalculatorFragment extends Fragment {
     private static final String TAG = "CalculatorFragment";
     private static final int MAX_DIGITS = 10;
     private static final char DIGIT_SEPARATOR = ',';
-    private long currentNumber;
-    private boolean isThereFirstArgument;
+    private String currentNumber = "";
     private long result;
     private Operations operation;
 
@@ -38,8 +37,8 @@ public class CalculatorFragment extends Fragment {
         view.findViewById(R.id.zero_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (String.valueOf(currentNumber).length() < MAX_DIGITS) {
-                    currentNumber *= 10;
+                if (currentNumber.length() < MAX_DIGITS && (currentNumber.length() == 0 || Long.parseLong(currentNumber) != 0)) {
+                    currentNumber += 0;
                     updateTextView(textView);
                 }
             }
@@ -48,9 +47,8 @@ public class CalculatorFragment extends Fragment {
         view.findViewById(R.id.one_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (String.valueOf(currentNumber).length() < MAX_DIGITS) {
-                    currentNumber *= 10;
-                    currentNumber++;
+                if (currentNumber.length() < MAX_DIGITS) {
+                    currentNumber += 1;
                     updateTextView(textView);
                 }
             }
@@ -59,8 +57,7 @@ public class CalculatorFragment extends Fragment {
         view.findViewById(R.id.two_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (String.valueOf(currentNumber).length() < MAX_DIGITS) {
-                    currentNumber *= 10;
+                if (currentNumber.length() < MAX_DIGITS) {
                     currentNumber += 2;
                     updateTextView(textView);
                 }
@@ -70,8 +67,7 @@ public class CalculatorFragment extends Fragment {
         view.findViewById(R.id.three_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (String.valueOf(currentNumber).length() < MAX_DIGITS) {
-                    currentNumber *= 10;
+                if (currentNumber.length() < MAX_DIGITS) {
                     currentNumber += 3;
                     updateTextView(textView);
                 }
@@ -81,8 +77,7 @@ public class CalculatorFragment extends Fragment {
         view.findViewById(R.id.four_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (String.valueOf(currentNumber).length() < MAX_DIGITS) {
-                    currentNumber *= 10;
+                if (currentNumber.length() < MAX_DIGITS) {
                     currentNumber += 4;
                     updateTextView(textView);
                 }
@@ -92,8 +87,7 @@ public class CalculatorFragment extends Fragment {
         view.findViewById(R.id.five_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (String.valueOf(currentNumber).length() < MAX_DIGITS) {
-                    currentNumber *= 10;
+                if (currentNumber.length() < MAX_DIGITS) {
                     currentNumber += 5;
                     updateTextView(textView);
                 }
@@ -103,8 +97,7 @@ public class CalculatorFragment extends Fragment {
         view.findViewById(R.id.six_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (String.valueOf(currentNumber).length() < MAX_DIGITS) {
-                    currentNumber *= 10;
+                if (currentNumber.length() < MAX_DIGITS) {
                     currentNumber += 6;
                     updateTextView(textView);
                 }
@@ -114,8 +107,7 @@ public class CalculatorFragment extends Fragment {
         view.findViewById(R.id.seven_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (String.valueOf(currentNumber).length() < MAX_DIGITS) {
-                    currentNumber *= 10;
+                if (currentNumber.length() < MAX_DIGITS) {
                     currentNumber += 7;
                     updateTextView(textView);
                 }
@@ -125,8 +117,7 @@ public class CalculatorFragment extends Fragment {
         view.findViewById(R.id.eight_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (String.valueOf(currentNumber).length() < MAX_DIGITS) {
-                    currentNumber *= 10;
+                if (currentNumber.length() < MAX_DIGITS) {
                     currentNumber += 8;
                     updateTextView(textView);
                 }
@@ -136,8 +127,7 @@ public class CalculatorFragment extends Fragment {
         view.findViewById(R.id.nine_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (String.valueOf(currentNumber).length() < MAX_DIGITS) {
-                    currentNumber *= 10;
+                if (currentNumber.length() < MAX_DIGITS) {
                     currentNumber += 9;
                     updateTextView(textView);
                 }
@@ -147,11 +137,13 @@ public class CalculatorFragment extends Fragment {
         view.findViewById(R.id.minus_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                result = isThereFirstArgument ? result - currentNumber : currentNumber;
-                currentNumber = 0;
+                operation = operation == null ? Operations.MINUS : operation;
+
+                calculateResult(getCurrentNumberAsNumber());
+
+                currentNumber = "";
                 operation = Operations.MINUS;
-                isThereFirstArgument = true;
-                String newText = putComma(result) + "\n" + operation;
+                String newText = putComma(String.valueOf(result)) + "\n" + operation;
                 textView.setText(newText);
             }
         });
@@ -159,11 +151,13 @@ public class CalculatorFragment extends Fragment {
         view.findViewById(R.id.plus_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                result = isThereFirstArgument ? result + currentNumber : currentNumber;
-                currentNumber = 0;
+                operation = operation == null ? Operations.PLUS : operation;
+
+                calculateResult(getCurrentNumberAsNumber());
+
+                currentNumber = "";
                 operation = Operations.PLUS;
-                isThereFirstArgument = true;
-                String newText = putComma(result) + "\n" + operation;
+                String newText = putComma(String.valueOf(result)) + "\n" + operation;
                 textView.setText(newText);
             }
         });
@@ -171,11 +165,13 @@ public class CalculatorFragment extends Fragment {
         view.findViewById(R.id.multiply_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                result = isThereFirstArgument ? result + currentNumber : currentNumber;
-                currentNumber = 0;
+                operation = operation == null ? Operations.MULL : operation;
+
+                calculateResult(getCurrentNumberAsNumber());
+
+                currentNumber = "";
                 operation = Operations.MULL;
-                isThereFirstArgument = true;
-                String newText = putComma(result) + "\n" + operation;
+                String newText = putComma(String.valueOf(result)) + "\n" + operation;
                 textView.setText(newText);
             }
         });
@@ -183,34 +179,42 @@ public class CalculatorFragment extends Fragment {
         view.findViewById(R.id.equal_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (operation != null) {
-                    switch (operation) {
-                        case MULL:
-                            result *= currentNumber;
-                            break;
-                        case PLUS:
-                            result += currentNumber;
-                            break;
-                        case MINUS:
-                            result -= currentNumber;
-                            break;
-                        case DIVIDE:
-                            result /= currentNumber;
-                            break;
-                    }
-                } else {
-                    if (!" ".equals(getTextViewLastLine(textView))) {
-                        result = currentNumber;
-                    }
+                long number = getCurrentNumberAsNumber();
+
+                calculateResult(number);
+
+                if (operation == null && !" ".equals(getTextViewLastLine(textView))) {
+                    result = number;
                 }
+
                 operation = null;
-                isThereFirstArgument = true;
-                currentNumber = 0;
-                String newText = putComma(result) + "\n ";
+                currentNumber = "";
+                String newText = putComma(String.valueOf(result)) + "\n ";
                 textView.setText(newText);
             }
         });
 
+    }
+
+    private void calculateResult(long number) {
+        if (operation != null) {
+            switch (operation) {
+                case MULL:
+                    result *= number + ("".equals(currentNumber) ? 1 : 0);
+                    break;
+                case PLUS:
+                    result += number;
+                    break;
+                case MINUS:
+                    result -= number;
+                    break;
+                case DIVIDE:
+                    result /= number;
+                    break;
+            }
+        } else {
+            result = number;
+        }
 
     }
 
@@ -220,7 +224,7 @@ public class CalculatorFragment extends Fragment {
     }
 
     private void updateTextView(TextView textView) {
-        String newText = getTextViewTextWithoutLastLine(textView) + (isThereFirstArgument && operation != null ? operation : "") + " " + putComma(currentNumber);
+        String newText = getTextViewTextWithoutLastLine(textView) + (operation != null ? operation : "") + " " + putComma(currentNumber);
         textView.setText(newText);
     }
 
@@ -233,15 +237,18 @@ public class CalculatorFragment extends Fragment {
         return stringBuilder.toString();
     }
 
-    private StringBuilder putComma(long number) {
-        String text = String.valueOf(number);
-        StringBuilder textWithComma = new StringBuilder(text);
-        int lastChar = '-' == (text.charAt(0)) ? 1 : 0;
+    private StringBuilder putComma(String number) {
+        StringBuilder textWithComma = new StringBuilder(number);
+        int lastChar = '-' == (number.charAt(0)) ? 1 : 0;
 
-        for (int i = text.length() - 3; i > lastChar; i -= 3) {
+        for (int i = number.length() - 3; i > lastChar; i -= 3) {
             textWithComma.insert(i, DIGIT_SEPARATOR);
         }
 
         return textWithComma;
+    }
+
+    public Long getCurrentNumberAsNumber() {
+        return "".equals(currentNumber) ? 0 : Long.parseLong(currentNumber);
     }
 }
