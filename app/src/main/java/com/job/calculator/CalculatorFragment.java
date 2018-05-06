@@ -201,6 +201,18 @@ public class CalculatorFragment extends Fragment {
             }
         });
 
+        view.findViewById(R.id.clear_last_task_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                result = 0;
+                currentNumber = "";
+                isThereDot = false;
+                isThereResult = false;
+                operation = null;
+                textView.setText("");
+            }
+        });
+
 
         view.findViewById(R.id.equal_button).setOnClickListener(new View.OnClickListener() {
             @Override
