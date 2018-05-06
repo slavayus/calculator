@@ -38,12 +38,13 @@
                 android:layout_height="match_parent"
                 android:text="@string/clear_last_task_button" />
 
-            <Button
+            <ImageButton
                 android:id="@+id/clear_last_char_button"
                 style="@style/AppTheme.Button"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="@string/clear_last_char_button" />
+                android:contentDescription="@string/clear_last_char_button"
+                android:src="@drawable/backspace_button" />
 
             <Button
                 android:id="@+id/divide_button"
