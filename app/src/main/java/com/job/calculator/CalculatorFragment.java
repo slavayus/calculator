@@ -177,12 +177,23 @@ public class CalculatorFragment extends Fragment {
             }
         });
 
+        view.findViewById(R.id.clear_last_char_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!"".equals(currentNumber)) {
+                    long newNumber = Long.parseLong(currentNumber) / 10;
+                    currentNumber = newNumber == 0 ? "" : String.valueOf(newNumber);
+                    updateTextView(textView);
+                }
+            }
+        });
+
         view.findViewById(R.id.equal_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 long number = getCurrentNumberAsNumber();
 
-                if(!"".equals(currentNumber)){
+                if (!"".equals(currentNumber)) {
                     calculateResult(number);
                 }
 
@@ -242,7 +253,7 @@ public class CalculatorFragment extends Fragment {
 
     private StringBuilder putComma(String number) {
         StringBuilder textWithComma = new StringBuilder(number);
-        int lastChar = '-' == (number.charAt(0)) ? 1 : 0;
+        int lastChar = number.length() > 0 && '-' == (number.charAt(0)) ? 1 : 0;
 
         for (int i = number.length() - 3; i > lastChar; i -= 3) {
             textWithComma.insert(i, DIGIT_SEPARATOR);
