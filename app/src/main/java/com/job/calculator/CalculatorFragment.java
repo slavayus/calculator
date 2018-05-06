@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,7 @@ public class CalculatorFragment extends Fragment {
     private static final int MAX_DIGITS = 10;
     private static final char DIGIT_SEPARATOR = ',';
     private String currentNumber = "";
+    private String dataInTextView = "";
     private double result;
     private Operations operation;
     private boolean isThereResult;
@@ -36,6 +38,9 @@ public class CalculatorFragment extends Fragment {
 
     public void setClickListeners(final View view) {
         final TextView textView = view.findViewById(R.id.textView);
+
+        textView.setMovementMethod(new ScrollingMovementMethod());
+
         view.findViewById(R.id.zero_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -140,8 +145,9 @@ public class CalculatorFragment extends Fragment {
 
                 currentNumber = "";
                 operation = Operations.MINUS;
-                String newText = putComma(String.valueOf(result)) + "\n" + operation;
-                textView.setText(newText);
+                String newText = dataInTextView + putComma(String.valueOf(result)) + "\n" + operation;
+                textView.setText("");
+                textView.append(newText);
             }
         });
 
@@ -154,8 +160,9 @@ public class CalculatorFragment extends Fragment {
 
                 currentNumber = "";
                 operation = Operations.PLUS;
-                String newText = putComma(String.valueOf(result)) + "\n" + operation;
-                textView.setText(newText);
+                String newText = dataInTextView + putComma(String.valueOf(result)) + "\n" + operation;
+                textView.setText("");
+                textView.append(newText);
             }
         });
 
@@ -168,8 +175,9 @@ public class CalculatorFragment extends Fragment {
 
                 currentNumber = "";
                 operation = Operations.MULL;
-                String newText = putComma(String.valueOf(result)) + "\n" + operation;
-                textView.setText(newText);
+                String newText = dataInTextView + putComma(String.valueOf(result)) + "\n" + operation;
+                textView.setText("");
+                textView.append(newText);
             }
         });
 
@@ -182,8 +190,9 @@ public class CalculatorFragment extends Fragment {
 
                 currentNumber = "";
                 operation = Operations.DIVIDE;
-                String newText = (Math.abs(result) == Double.POSITIVE_INFINITY ? String.valueOf(result) : putComma(String.valueOf(result))) + "\n" + operation;
-                textView.setText(newText);
+                String newText = dataInTextView + (Math.abs(result) == Double.POSITIVE_INFINITY ? String.valueOf(result) : putComma(String.valueOf(result))) + "\n" + operation;
+                textView.setText("");
+                textView.append(newText);
             }
         });
 
@@ -219,18 +228,25 @@ public class CalculatorFragment extends Fragment {
             public void onClick(View v) {
                 double number = getCurrentNumberAsNumber();
 
+                double previousResult = result;
+
                 if (!"".equals(currentNumber)) {
                     calculateResult(number);
                 }
 
                 if (operation == null && !" ".equals(getTextViewLastLine(textView))) {
                     result = number;
+                } else {
+                    if (operation != null && !"".equals(currentNumber)) {
+                        dataInTextView += previousResult + "\n " + operation + " " + currentNumber + "\n = " + result + "\n\n ";
+                    }
                 }
 
                 operation = null;
                 currentNumber = "";
-                String newText = (Math.abs(result) == Double.POSITIVE_INFINITY ? String.valueOf(result) : putComma(String.valueOf(result))) + "\n ";
-                textView.setText(newText);
+                String newText = dataInTextView + (Math.abs(result) == Double.POSITIVE_INFINITY ? String.valueOf(result) : putComma(String.valueOf(result))) + "\n ";
+                textView.setText("");
+                textView.append(newText);
             }
         });
 
