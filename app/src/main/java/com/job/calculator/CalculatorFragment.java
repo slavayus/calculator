@@ -173,6 +173,20 @@ public class CalculatorFragment extends Fragment {
             }
         });
 
+        view.findViewById(R.id.divide_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                operation = operation == null && isThereResult ? Operations.DIVIDE : operation;
+
+                calculateResult(getCurrentNumberAsNumber());
+
+                currentNumber = "";
+                operation = Operations.DIVIDE;
+                String newText = (Math.abs(result) == Double.POSITIVE_INFINITY ? String.valueOf(result) : putComma(String.valueOf(result))) + "\n" + operation;
+                textView.setText(newText);
+            }
+        });
+
         view.findViewById(R.id.clear_last_char_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -182,8 +196,8 @@ public class CalculatorFragment extends Fragment {
                         isThereDot = false;
                     }
                     currentNumber = "0".equals(newNumber) ? "" : newNumber;
+                    updateTextView(textView);
                 }
-                updateTextView(textView);
             }
         });
 
@@ -203,7 +217,7 @@ public class CalculatorFragment extends Fragment {
 
                 operation = null;
                 currentNumber = "";
-                String newText = putComma(String.valueOf(result)) + "\n ";
+                String newText = (Math.abs(result) == Double.POSITIVE_INFINITY ? String.valueOf(result) : putComma(String.valueOf(result))) + "\n ";
                 textView.setText(newText);
             }
         });
@@ -230,7 +244,7 @@ public class CalculatorFragment extends Fragment {
                     result -= number;
                     break;
                 case DIVIDE:
-                    result /= number;
+                    result /= number + ("".equals(currentNumber) ? 1 : 0);
                     break;
             }
         } else {
@@ -259,7 +273,7 @@ public class CalculatorFragment extends Fragment {
         return stringBuilder.toString();
     }
 
-    private StringBuilder putComma(String number) {
+    private String putComma(String number) {
         StringBuilder textWithComma = new StringBuilder(number);
         int lastChar = number.length() > 0 && '-' == (number.charAt(0)) ? 1 : 0;
         int firstChar = number.indexOf('.') != -1 ? number.indexOf('.') - 3 : number.length() - 3;
@@ -267,7 +281,7 @@ public class CalculatorFragment extends Fragment {
             textWithComma.insert(i, DIGIT_SEPARATOR);
         }
 
-        return textWithComma;
+        return textWithComma.toString();
     }
 
     public double getCurrentNumberAsNumber() {
