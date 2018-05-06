@@ -20,6 +20,7 @@ public class CalculatorFragment extends Fragment {
     private String currentNumber = "";
     private long result;
     private Operations operation;
+    private boolean isThereResult;
 
     @Nullable
     @Override
@@ -137,7 +138,7 @@ public class CalculatorFragment extends Fragment {
         view.findViewById(R.id.minus_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                operation = operation == null ? Operations.MINUS : operation;
+                operation = operation == null && isThereResult ? Operations.MINUS : operation;
 
                 calculateResult(getCurrentNumberAsNumber());
 
@@ -151,7 +152,7 @@ public class CalculatorFragment extends Fragment {
         view.findViewById(R.id.plus_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                operation = operation == null ? Operations.PLUS : operation;
+                operation = operation == null && isThereResult ? Operations.PLUS : operation;
 
                 calculateResult(getCurrentNumberAsNumber());
 
@@ -165,7 +166,7 @@ public class CalculatorFragment extends Fragment {
         view.findViewById(R.id.multiply_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                operation = operation == null ? Operations.MULL : operation;
+                operation = operation == null && isThereResult ? Operations.MULL : operation;
 
                 calculateResult(getCurrentNumberAsNumber());
 
@@ -181,7 +182,9 @@ public class CalculatorFragment extends Fragment {
             public void onClick(View v) {
                 long number = getCurrentNumberAsNumber();
 
-                calculateResult(number);
+                if(!"".equals(currentNumber)){
+                    calculateResult(number);
+                }
 
                 if (operation == null && !" ".equals(getTextViewLastLine(textView))) {
                     result = number;
@@ -215,7 +218,7 @@ public class CalculatorFragment extends Fragment {
         } else {
             result = number;
         }
-
+        isThereResult = true;
     }
 
     private String getTextViewLastLine(TextView textView) {
