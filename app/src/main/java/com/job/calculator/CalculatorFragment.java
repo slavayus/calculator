@@ -38,8 +38,8 @@ public class CalculatorFragment extends Fragment {
         view.findViewById(R.id.zero_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (currentNumber.length() < MAX_DIGITS && (currentNumber.length() == 0 || Long.parseLong(currentNumber) != 0)) {
-                    currentNumber += 0;
+                if (currentNumber.length() == 0 || Long.parseLong(currentNumber) != 0) {
+                    appendNewCharToCurrentNumber(0);
                     updateTextView(textView);
                 }
             }
@@ -48,90 +48,72 @@ public class CalculatorFragment extends Fragment {
         view.findViewById(R.id.one_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (currentNumber.length() < MAX_DIGITS) {
-                    currentNumber += 1;
-                    updateTextView(textView);
-                }
+                appendNewCharToCurrentNumber(1);
+                updateTextView(textView);
             }
         });
 
         view.findViewById(R.id.two_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (currentNumber.length() < MAX_DIGITS) {
-                    currentNumber += 2;
-                    updateTextView(textView);
-                }
+                appendNewCharToCurrentNumber(2);
+                updateTextView(textView);
             }
         });
 
         view.findViewById(R.id.three_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (currentNumber.length() < MAX_DIGITS) {
-                    currentNumber += 3;
-                    updateTextView(textView);
-                }
+                appendNewCharToCurrentNumber(3);
+                updateTextView(textView);
             }
         });
 
         view.findViewById(R.id.four_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (currentNumber.length() < MAX_DIGITS) {
-                    currentNumber += 4;
-                    updateTextView(textView);
-                }
+                appendNewCharToCurrentNumber(4);
+                updateTextView(textView);
             }
         });
 
         view.findViewById(R.id.five_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (currentNumber.length() < MAX_DIGITS) {
-                    currentNumber += 5;
-                    updateTextView(textView);
-                }
+                appendNewCharToCurrentNumber(5);
+                updateTextView(textView);
             }
         });
 
         view.findViewById(R.id.six_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (currentNumber.length() < MAX_DIGITS) {
-                    currentNumber += 6;
-                    updateTextView(textView);
-                }
+                appendNewCharToCurrentNumber(6);
+                updateTextView(textView);
             }
         });
 
         view.findViewById(R.id.seven_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (currentNumber.length() < MAX_DIGITS) {
-                    currentNumber += 7;
-                    updateTextView(textView);
-                }
+                appendNewCharToCurrentNumber(7);
+                updateTextView(textView);
             }
         });
 
         view.findViewById(R.id.eight_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (currentNumber.length() < MAX_DIGITS) {
-                    currentNumber += 8;
-                    updateTextView(textView);
-                }
+                appendNewCharToCurrentNumber(8);
+                updateTextView(textView);
             }
         });
 
         view.findViewById(R.id.nine_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (currentNumber.length() < MAX_DIGITS) {
-                    currentNumber += 9;
-                    updateTextView(textView);
-                }
+                appendNewCharToCurrentNumber(9);
+                updateTextView(textView);
             }
         });
 
@@ -208,6 +190,13 @@ public class CalculatorFragment extends Fragment {
             }
         });
 
+    }
+
+    private void appendNewCharToCurrentNumber(int newChar) {
+        if (currentNumber.length() < MAX_DIGITS) {
+            currentNumber += newChar;
+            isThereResult = operation != null;
+        }
     }
 
     private void calculateResult(long number) {
