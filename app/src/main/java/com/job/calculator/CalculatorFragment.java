@@ -210,6 +210,20 @@ public class CalculatorFragment extends Fragment {
             }
         });
 
+        view.findViewById(R.id.clear_all_tasks_buton).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                result = 0;
+                currentNumber = "";
+                isThereDot = false;
+                isThereResult = false;
+                operation = null;
+                dataInTextView = "";
+                textView.setText("");
+                textView.append(" ");
+            }
+        });
+
         view.findViewById(R.id.clear_last_task_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -219,6 +233,7 @@ public class CalculatorFragment extends Fragment {
                 isThereResult = false;
                 operation = null;
                 textView.setText("");
+                textView.append(dataInTextView);
             }
         });
 
@@ -238,7 +253,7 @@ public class CalculatorFragment extends Fragment {
                     result = number;
                 } else {
                     if (operation != null && !"".equals(currentNumber)) {
-                        dataInTextView += previousResult + "\n " + operation + " " + currentNumber + "\n = " + result + "\n\n ";
+                        dataInTextView += putComma(String.valueOf(previousResult)) + "\n " + operation + " " + putComma(currentNumber) + "\n = " + putComma(String.valueOf(result)) + "\n\n ";
                     }
                 }
 
