@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 public class CalculatorFragment extends Fragment {
     private static final String TAG = "CalculatorFragment";
+    private static final String TASKS = "TASKS";
     private static final int MAX_DIGITS = 10;
     private static final char DIGIT_SEPARATOR = ',';
     private String currentNumber = "";
@@ -30,16 +31,26 @@ public class CalculatorFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_calculator, container, false);
 
+        if (savedInstanceState != null) {
+            dataInTextView = savedInstanceState.getString(TASKS);
+        }
+
         setClickListeners(view);
 
-
         return view;
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString(TASKS, dataInTextView);
     }
 
     public void setClickListeners(final View view) {
         final TextView textView = view.findViewById(R.id.textView);
 
         textView.setMovementMethod(new ScrollingMovementMethod());
+        textView.append(dataInTextView);
 
         view.findViewById(R.id.zero_button).setOnClickListener(new View.OnClickListener() {
             @Override
