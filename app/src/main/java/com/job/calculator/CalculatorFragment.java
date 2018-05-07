@@ -17,6 +17,8 @@ import android.widget.TextView;
 
 public class CalculatorFragment extends Fragment {
     private static final String TAG = "CalculatorFragment";
+    private static final String MATH_PI = "3.141592";
+    private static final String MATH_E = "2.718281";
     private static final String TASKS = "TASKS";
     private static final int MAX_DIGITS = 10;
     private static final char DIGIT_SEPARATOR = ',';
@@ -278,6 +280,24 @@ public class CalculatorFragment extends Fragment {
                     String newText = dataInTextView + (Math.abs(result) == Double.POSITIVE_INFINITY ? String.valueOf(result) : putComma(String.valueOf(result))) + "\n" + operation;
                     textView.setText("");
                     textView.append(newText);
+                }
+            });
+
+            view.findViewById(R.id.pi_button).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    currentNumber = MATH_PI;
+                    isThereDot = true;
+                    updateTextView(textView);
+                }
+            });
+
+            view.findViewById(R.id.e_button).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    currentNumber = MATH_E;
+                    isThereDot = true;
+                    updateTextView(textView);
                 }
             });
         }
