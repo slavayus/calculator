@@ -12,6 +12,8 @@ import android.widget.Button;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import static com.job.calculator.Formatter.putComma;
+
 /**
  * Fragment for displaying calculator
  */
@@ -22,7 +24,6 @@ public class CalculatorFragment extends Fragment {
     private static final String MATH_E = "2.718281";
     private static final String TASKS = "TASKS";
     private static final int MAX_DIGITS = 10;
-    private static final char DIGIT_SEPARATOR = ',';
     private String currentNumber = "";
     private String dataInTextView = "";
     private double result;
@@ -288,9 +289,7 @@ public class CalculatorFragment extends Fragment {
                         result = Math.sin(Math.toRadians(Double.parseDouble(currentNumber)));
                     }
 
-                    dataInTextView += "sin(" + (Math.abs(Double.parseDouble(currentNumber)) == Double.POSITIVE_INFINITY ? String.valueOf(Double.parseDouble(currentNumber)) : putComma(String.valueOf(Double.parseDouble(currentNumber)))) +
-                            (inDegrees ? "\u00B0" : "") + ")\n = " +
-                            (Math.abs(result) == Double.POSITIVE_INFINITY ? String.valueOf(result) : putComma(String.valueOf(result))) + "\n\n ";
+                    dataInTextView += Formatter.getAsSin(inDegrees, currentNumber, result);
 
                     currentNumber = "";
                     String newText = dataInTextView + (Math.abs(result) == Double.POSITIVE_INFINITY ? String.valueOf(result) : putComma(String.valueOf(result))) + "\n ";
@@ -316,9 +315,7 @@ public class CalculatorFragment extends Fragment {
                         result = Math.cos(Math.toRadians(Double.parseDouble(currentNumber)));
                     }
 
-                    dataInTextView += "cos(" + (Math.abs(Double.parseDouble(currentNumber)) == Double.POSITIVE_INFINITY ? String.valueOf(Double.parseDouble(currentNumber)) : putComma(String.valueOf(Double.parseDouble(currentNumber)))) +
-                            (inDegrees ? "\u00B0" : "") + ")\n = " +
-                            (Math.abs(result) == Double.POSITIVE_INFINITY ? String.valueOf(result) : putComma(String.valueOf(result))) + "\n\n ";
+                    dataInTextView += Formatter.getAsCos(inDegrees, currentNumber, result);
 
                     currentNumber = "";
                     String newText = dataInTextView + (Math.abs(result) == Double.POSITIVE_INFINITY ? String.valueOf(result) : putComma(String.valueOf(result))) + "\n ";
@@ -344,9 +341,7 @@ public class CalculatorFragment extends Fragment {
                         result = Math.tan(Math.toRadians(Double.parseDouble(currentNumber)));
                     }
 
-                    dataInTextView += "tan(" + (Math.abs(Double.parseDouble(currentNumber)) == Double.POSITIVE_INFINITY ? String.valueOf(Double.parseDouble(currentNumber)) : putComma(String.valueOf(Double.parseDouble(currentNumber)))) +
-                            (inDegrees ? "\u00B0" : "") + ")\n = " +
-                            (Math.abs(result) == Double.POSITIVE_INFINITY ? String.valueOf(result) : putComma(String.valueOf(result))) + "\n\n ";
+                    dataInTextView += Formatter.getAsTan(inDegrees, currentNumber, result);
 
                     currentNumber = "";
                     String newText = dataInTextView + (Math.abs(result) == Double.POSITIVE_INFINITY ? String.valueOf(result) : putComma(String.valueOf(result))) + "\n ";
@@ -372,10 +367,7 @@ public class CalculatorFragment extends Fragment {
                         result = 1 / Math.tan(Math.toRadians(Double.parseDouble(currentNumber)));
                     }
 
-
-                    dataInTextView += "ctg(" + (Math.abs(Double.parseDouble(currentNumber)) == Double.POSITIVE_INFINITY ? String.valueOf(Double.parseDouble(currentNumber)) : putComma(String.valueOf(Double.parseDouble(currentNumber)))) +
-                            (inDegrees ? "\u00B0" : "") + ")\n = " +
-                            (Math.abs(result) == Double.POSITIVE_INFINITY ? String.valueOf(result) : putComma(String.valueOf(result))) + "\n\n ";
+                    dataInTextView += Formatter.getAsCtg(inDegrees, currentNumber, result);
 
                     currentNumber = "";
                     String newText = dataInTextView + (Math.abs(result) == Double.POSITIVE_INFINITY ? String.valueOf(result) : putComma(String.valueOf(result))) + "\n ";
@@ -548,17 +540,6 @@ public class CalculatorFragment extends Fragment {
             stringBuilder.append(text[i]).append("\n");
         }
         return stringBuilder.toString();
-    }
-
-    private String putComma(String number) {
-        StringBuilder textWithComma = new StringBuilder(number);
-        int lastChar = number.length() > 0 && '-' == (number.charAt(0)) ? 1 : 0;
-        int firstChar = number.indexOf('.') != -1 ? number.indexOf('.') - 3 : number.length() - 3;
-        for (int i = firstChar; i > lastChar; i -= 3) {
-            textWithComma.insert(i, DIGIT_SEPARATOR);
-        }
-
-        return textWithComma.toString();
     }
 
     public double getCurrentNumberAsNumber() {
