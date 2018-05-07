@@ -8,6 +8,7 @@ import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 /**
@@ -222,6 +223,65 @@ public class CalculatorFragment extends Fragment {
             }
         });
 
+        Button button = view.findViewById(R.id.square_button);
+        if (button != null) {
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    operation = null;
+                    isThereResult = true;
+                    isThereDot = false;
+                    if ("".equals(currentNumber)) {
+                        currentNumber = String.valueOf(result);
+                    }
+                    result = Math.pow(Double.parseDouble(currentNumber), 2);
+
+                    dataInTextView += (Math.abs(Double.parseDouble(currentNumber)) == Double.POSITIVE_INFINITY ? String.valueOf(Double.parseDouble(currentNumber)) : putComma(String.valueOf(Double.parseDouble(currentNumber)))) +
+                            "\n ^ 2 \n = " + (Math.abs(result) == Double.POSITIVE_INFINITY ? String.valueOf(result) : putComma(String.valueOf(result))) + "\n\n ";
+
+                    currentNumber = "";
+                    String newText = dataInTextView + (Math.abs(result) == Double.POSITIVE_INFINITY ? String.valueOf(result) : putComma(String.valueOf(result))) + "\n ";
+                    textView.setText("");
+                    textView.append(newText);
+                }
+            });
+            view.findViewById(R.id.cube_button).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    operation = null;
+                    isThereResult = true;
+                    isThereDot = false;
+                    if ("".equals(currentNumber)) {
+                        currentNumber = String.valueOf(result);
+                    }
+                    result = Math.pow(Double.parseDouble(currentNumber), 3);
+
+                    dataInTextView += (Math.abs(Double.parseDouble(currentNumber)) == Double.POSITIVE_INFINITY ? String.valueOf(Double.parseDouble(currentNumber)) : putComma(String.valueOf(Double.parseDouble(currentNumber)))) +
+                            "\n ^ 3 \n = " + (Math.abs(result) == Double.POSITIVE_INFINITY ? String.valueOf(result) : putComma(String.valueOf(result))) + "\n\n ";
+
+                    currentNumber = "";
+                    String newText = dataInTextView + (Math.abs(result) == Double.POSITIVE_INFINITY ? String.valueOf(result) : putComma(String.valueOf(result))) + "\n ";
+                    textView.setText("");
+                    textView.append(newText);
+                }
+            });
+
+            view.findViewById(R.id.random_exponent_button).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    operation = operation == null && isThereResult ? Operations.RANDOM_EXPONENT : operation;
+
+                    calculateResult(getCurrentNumberAsNumber());
+
+                    currentNumber = "";
+                    operation = Operations.RANDOM_EXPONENT;
+                    String newText = dataInTextView + (Math.abs(result) == Double.POSITIVE_INFINITY ? String.valueOf(result) : putComma(String.valueOf(result))) + "\n" + operation;
+                    textView.setText("");
+                    textView.append(newText);
+                }
+            });
+        }
+
         view.findViewById(R.id.clear_last_char_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -279,7 +339,10 @@ public class CalculatorFragment extends Fragment {
                     result = number;
                 } else {
                     if (operation != null && !"".equals(currentNumber)) {
-                        dataInTextView += putComma(String.valueOf(previousResult)) + "\n " + operation + " " + putComma(currentNumber) + "\n = " + putComma(String.valueOf(result)) + "\n\n ";
+                        dataInTextView += (Math.abs(previousResult) == Double.POSITIVE_INFINITY ? String.valueOf(previousResult) : putComma(String.valueOf(previousResult))) +
+                                "\n " + operation + " " +
+                                (Math.abs(Double.parseDouble(currentNumber)) == Double.POSITIVE_INFINITY ? currentNumber : putComma(currentNumber)) +
+                                "\n = " + (Math.abs(result) == Double.POSITIVE_INFINITY ? String.valueOf(result) : putComma(String.valueOf(result))) + "\n\n ";
                     }
                 }
 
@@ -317,6 +380,8 @@ public class CalculatorFragment extends Fragment {
                     break;
                 case PERCENT:
                     result = result * (number + ("".equals(currentNumber) ? 100 : 0)) / 100;
+                case RANDOM_EXPONENT:
+                    result = Math.pow(result, (number + ("".equals(currentNumber) ? 1 : 0)));
             }
         } else {
             result = number;

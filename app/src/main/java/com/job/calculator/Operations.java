@@ -30,5 +30,10 @@ public enum Operations {
         public String toString() {
             return "%";
         }
+    }, RANDOM_EXPONENT {
+        @Override
+        public String toString() {
+            return "^";
+        }
     }
 }
