@@ -20,4 +20,9 @@
     <string name="zero_button">0</string>
     <string name="dot_button">.</string>
     <string name="equal_button">=</string>
+    <string name="pi_button">PI</string>
+    <string name="e_button">e</string>
+    <string name="square_button">^2</string>
+    <string name="cube_button">^3</string>
+    <string name="random_exponent_button">^x</string>
 </resources>
