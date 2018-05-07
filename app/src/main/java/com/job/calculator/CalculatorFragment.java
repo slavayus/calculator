@@ -289,6 +289,90 @@ public class CalculatorFragment extends Fragment {
                 }
             });
 
+            view.findViewById(R.id.sin_button).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    operation = null;
+                    isThereResult = true;
+                    isThereDot = false;
+                    if ("".equals(currentNumber)) {
+                        currentNumber = String.valueOf(result);
+                    }
+                    result = Math.sin(Double.parseDouble(currentNumber));
+
+                    dataInTextView += "sin(" + (Math.abs(Double.parseDouble(currentNumber)) == Double.POSITIVE_INFINITY ? String.valueOf(Double.parseDouble(currentNumber)) : putComma(String.valueOf(Double.parseDouble(currentNumber)))) +
+                            ")\n = " + (Math.abs(result) == Double.POSITIVE_INFINITY ? String.valueOf(result) : putComma(String.valueOf(result))) + "\n\n ";
+
+                    currentNumber = "";
+                    String newText = dataInTextView + (Math.abs(result) == Double.POSITIVE_INFINITY ? String.valueOf(result) : putComma(String.valueOf(result))) + "\n ";
+                    textView.setText("");
+                    textView.append(newText);
+                }
+            });
+
+            view.findViewById(R.id.cos_button).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    operation = null;
+                    isThereResult = true;
+                    isThereDot = false;
+                    if ("".equals(currentNumber)) {
+                        currentNumber = String.valueOf(result);
+                    }
+                    result = Math.cos(Double.parseDouble(currentNumber));
+
+                    dataInTextView += "cos(" + (Math.abs(Double.parseDouble(currentNumber)) == Double.POSITIVE_INFINITY ? String.valueOf(Double.parseDouble(currentNumber)) : putComma(String.valueOf(Double.parseDouble(currentNumber)))) +
+                            ")\n = " + (Math.abs(result) == Double.POSITIVE_INFINITY ? String.valueOf(result) : putComma(String.valueOf(result))) + "\n\n ";
+
+                    currentNumber = "";
+                    String newText = dataInTextView + (Math.abs(result) == Double.POSITIVE_INFINITY ? String.valueOf(result) : putComma(String.valueOf(result))) + "\n ";
+                    textView.setText("");
+                    textView.append(newText);
+                }
+            });
+
+            view.findViewById(R.id.tan_button).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    operation = null;
+                    isThereResult = true;
+                    isThereDot = false;
+                    if ("".equals(currentNumber)) {
+                        currentNumber = String.valueOf(result);
+                    }
+                    result = Math.tan(Double.parseDouble(currentNumber));
+
+                    dataInTextView += "tan(" + (Math.abs(Double.parseDouble(currentNumber)) == Double.POSITIVE_INFINITY ? String.valueOf(Double.parseDouble(currentNumber)) : putComma(String.valueOf(Double.parseDouble(currentNumber)))) +
+                            ")\n = " + (Math.abs(result) == Double.POSITIVE_INFINITY ? String.valueOf(result) : putComma(String.valueOf(result))) + "\n\n ";
+
+                    currentNumber = "";
+                    String newText = dataInTextView + (Math.abs(result) == Double.POSITIVE_INFINITY ? String.valueOf(result) : putComma(String.valueOf(result))) + "\n ";
+                    textView.setText("");
+                    textView.append(newText);
+                }
+            });
+
+            view.findViewById(R.id.ctg_button).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    operation = null;
+                    isThereResult = true;
+                    isThereDot = false;
+                    if ("".equals(currentNumber)) {
+                        currentNumber = String.valueOf(result);
+                    }
+                    result = 1 / Math.tan(Double.parseDouble(currentNumber));
+
+                    dataInTextView += "ctg(" + (Math.abs(Double.parseDouble(currentNumber)) == Double.POSITIVE_INFINITY ? String.valueOf(Double.parseDouble(currentNumber)) : putComma(String.valueOf(Double.parseDouble(currentNumber)))) +
+                            ")\n = " + (Math.abs(result) == Double.POSITIVE_INFINITY ? String.valueOf(result) : putComma(String.valueOf(result))) + "\n\n ";
+
+                    currentNumber = "";
+                    String newText = dataInTextView + (Math.abs(result) == Double.POSITIVE_INFINITY ? String.valueOf(result) : putComma(String.valueOf(result))) + "\n ";
+                    textView.setText("");
+                    textView.append(newText);
+                }
+            });
+
             view.findViewById(R.id.random_exponent_button).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
