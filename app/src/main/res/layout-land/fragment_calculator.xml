@@ -49,6 +49,11 @@
                 android:id="@+id/divide_button"
                 style="@style/AppTheme.Button"
                 android:text="@string/divide_button" />
+
+            <Button
+                android:id="@+id/tan_button"
+                style="@style/AppTheme.Button"
+                android:text="@string/tan_button" />
         </TableRow>
 
         <TableRow
@@ -80,6 +85,11 @@
                 android:id="@+id/multiply_button"
                 style="@style/AppTheme.Button"
                 android:text="@string/multiply_button" />
+
+            <Button
+                android:id="@+id/sin_button"
+                style="@style/AppTheme.Button"
+                android:text="@string/sin_button" />
         </TableRow>
 
         <TableRow
@@ -111,6 +121,11 @@
                 android:id="@+id/minus_button"
                 style="@style/AppTheme.Button"
                 android:text="@string/minus_button" />
+
+            <Button
+                android:id="@+id/cos_button"
+                style="@style/AppTheme.Button"
+                android:text="@string/cos_button" />
         </TableRow>
 
         <TableRow
@@ -142,6 +157,11 @@
                 android:id="@+id/plus_button"
                 style="@style/AppTheme.Button"
                 android:text="@string/plus_button" />
+
+            <Button
+                android:id="@+id/ctg_button"
+                style="@style/AppTheme.Button"
+                android:text="@string/ctg_button" />
         </TableRow>
 
         <TableRow
@@ -173,6 +193,11 @@
                 android:id="@+id/equal_button"
                 style="@style/AppTheme.Button"
                 android:text="@string/equal_button" />
+
+            <Button
+                android:id="@+id/sqrt_button"
+                style="@style/AppTheme.Button"
+                android:text="@string/sqrt_button" />
         </TableRow>
     </TableLayout>
 </LinearLayout>
