@@ -25,6 +25,10 @@ public enum Operations {
         public String toString() {
             return "+";
         }
+    }, PERCENT {
+        @Override
+        public String toString() {
+            return "%";
+        }
     }
-
 }
