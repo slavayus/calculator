@@ -196,6 +196,21 @@ public class CalculatorFragment extends Fragment {
             }
         });
 
+        view.findViewById(R.id.percent_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                operation = operation == null && isThereResult ? Operations.PERCENT : operation;
+
+                calculateResult(getCurrentNumberAsNumber());
+
+                currentNumber = "";
+                operation = Operations.PERCENT;
+                String newText = dataInTextView + (Math.abs(result) == Double.POSITIVE_INFINITY ? String.valueOf(result) : putComma(String.valueOf(result))) + "\n" + operation;
+                textView.setText("");
+                textView.append(newText);
+            }
+        });
+
         view.findViewById(R.id.clear_last_char_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -289,6 +304,8 @@ public class CalculatorFragment extends Fragment {
                 case DIVIDE:
                     result /= number + ("".equals(currentNumber) ? 1 : 0);
                     break;
+                case PERCENT:
+                    result = result * (number + ("".equals(currentNumber) ? 100 : 0)) / 100;
             }
         } else {
             result = number;
