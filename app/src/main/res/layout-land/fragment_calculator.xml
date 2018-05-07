@@ -193,6 +193,11 @@
                 android:id="@+id/equal_button"
                 style="@style/AppTheme.Button"
                 android:text="@string/equal_button" />
+
+            <Switch
+                android:id="@+id/degree_switch_button"
+                style="@style/AppTheme.Button"
+                android:text="@string/degree_switch_button" />
         </TableRow>
     </TableLayout>
 </LinearLayout>

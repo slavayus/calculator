@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Switch;
 import android.widget.TextView;
 
 /**
@@ -150,6 +151,7 @@ public class CalculatorFragment extends Fragment {
                 }
             }
         });
+
         view.findViewById(R.id.minus_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -278,10 +280,17 @@ public class CalculatorFragment extends Fragment {
                     if ("".equals(currentNumber)) {
                         currentNumber = String.valueOf(result);
                     }
+
                     result = Math.sin(Double.parseDouble(currentNumber));
 
+                    boolean inDegrees = inDegrees(view);
+                    if (inDegrees) {
+                        result = Math.sin(Math.toRadians(Double.parseDouble(currentNumber)));
+                    }
+
                     dataInTextView += "sin(" + (Math.abs(Double.parseDouble(currentNumber)) == Double.POSITIVE_INFINITY ? String.valueOf(Double.parseDouble(currentNumber)) : putComma(String.valueOf(Double.parseDouble(currentNumber)))) +
-                            ")\n = " + (Math.abs(result) == Double.POSITIVE_INFINITY ? String.valueOf(result) : putComma(String.valueOf(result))) + "\n\n ";
+                            (inDegrees ? "\u00B0" : "") + ")\n = " +
+                            (Math.abs(result) == Double.POSITIVE_INFINITY ? String.valueOf(result) : putComma(String.valueOf(result))) + "\n\n ";
 
                     currentNumber = "";
                     String newText = dataInTextView + (Math.abs(result) == Double.POSITIVE_INFINITY ? String.valueOf(result) : putComma(String.valueOf(result))) + "\n ";
@@ -299,10 +308,17 @@ public class CalculatorFragment extends Fragment {
                     if ("".equals(currentNumber)) {
                         currentNumber = String.valueOf(result);
                     }
+
                     result = Math.cos(Double.parseDouble(currentNumber));
 
+                    boolean inDegrees = inDegrees(view);
+                    if (inDegrees) {
+                        result = Math.cos(Math.toRadians(Double.parseDouble(currentNumber)));
+                    }
+
                     dataInTextView += "cos(" + (Math.abs(Double.parseDouble(currentNumber)) == Double.POSITIVE_INFINITY ? String.valueOf(Double.parseDouble(currentNumber)) : putComma(String.valueOf(Double.parseDouble(currentNumber)))) +
-                            ")\n = " + (Math.abs(result) == Double.POSITIVE_INFINITY ? String.valueOf(result) : putComma(String.valueOf(result))) + "\n\n ";
+                            (inDegrees ? "\u00B0" : "") + ")\n = " +
+                            (Math.abs(result) == Double.POSITIVE_INFINITY ? String.valueOf(result) : putComma(String.valueOf(result))) + "\n\n ";
 
                     currentNumber = "";
                     String newText = dataInTextView + (Math.abs(result) == Double.POSITIVE_INFINITY ? String.valueOf(result) : putComma(String.valueOf(result))) + "\n ";
@@ -320,10 +336,17 @@ public class CalculatorFragment extends Fragment {
                     if ("".equals(currentNumber)) {
                         currentNumber = String.valueOf(result);
                     }
+
                     result = Math.tan(Double.parseDouble(currentNumber));
 
+                    boolean inDegrees = inDegrees(view);
+                    if (inDegrees) {
+                        result = Math.tan(Math.toRadians(Double.parseDouble(currentNumber)));
+                    }
+
                     dataInTextView += "tan(" + (Math.abs(Double.parseDouble(currentNumber)) == Double.POSITIVE_INFINITY ? String.valueOf(Double.parseDouble(currentNumber)) : putComma(String.valueOf(Double.parseDouble(currentNumber)))) +
-                            ")\n = " + (Math.abs(result) == Double.POSITIVE_INFINITY ? String.valueOf(result) : putComma(String.valueOf(result))) + "\n\n ";
+                            (inDegrees ? "\u00B0" : "") + ")\n = " +
+                            (Math.abs(result) == Double.POSITIVE_INFINITY ? String.valueOf(result) : putComma(String.valueOf(result))) + "\n\n ";
 
                     currentNumber = "";
                     String newText = dataInTextView + (Math.abs(result) == Double.POSITIVE_INFINITY ? String.valueOf(result) : putComma(String.valueOf(result))) + "\n ";
@@ -341,10 +364,18 @@ public class CalculatorFragment extends Fragment {
                     if ("".equals(currentNumber)) {
                         currentNumber = String.valueOf(result);
                     }
+
                     result = 1 / Math.tan(Double.parseDouble(currentNumber));
 
+                    boolean inDegrees = inDegrees(view);
+                    if (inDegrees) {
+                        result = 1 / Math.tan(Math.toRadians(Double.parseDouble(currentNumber)));
+                    }
+
+
                     dataInTextView += "ctg(" + (Math.abs(Double.parseDouble(currentNumber)) == Double.POSITIVE_INFINITY ? String.valueOf(Double.parseDouble(currentNumber)) : putComma(String.valueOf(Double.parseDouble(currentNumber)))) +
-                            ")\n = " + (Math.abs(result) == Double.POSITIVE_INFINITY ? String.valueOf(result) : putComma(String.valueOf(result))) + "\n\n ";
+                            (inDegrees ? "\u00B0" : "") + ")\n = " +
+                            (Math.abs(result) == Double.POSITIVE_INFINITY ? String.valueOf(result) : putComma(String.valueOf(result))) + "\n\n ";
 
                     currentNumber = "";
                     String newText = dataInTextView + (Math.abs(result) == Double.POSITIVE_INFINITY ? String.valueOf(result) : putComma(String.valueOf(result))) + "\n ";
@@ -459,6 +490,11 @@ public class CalculatorFragment extends Fragment {
             }
         });
 
+    }
+
+    private boolean inDegrees(View view) {
+        Switch degreeSwitcher = view.findViewById(R.id.degree_switch_button);
+        return degreeSwitcher.isChecked();
     }
 
     private void appendNewCharToCurrentNumber(char newChar) {
