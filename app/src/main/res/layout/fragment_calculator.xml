@@ -130,9 +130,9 @@
             android:layout_weight="1">
 
             <Button
-                android:id="@+id/percent_button"
+                android:id="@+id/sqrt_button"
                 style="@style/AppTheme.Button"
-                android:text="@string/percent_button" />
+                android:text="@string/sqrt_button" />
 
             <Button
                 android:id="@+id/zero_button"

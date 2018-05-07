@@ -10,8 +10,8 @@
         style="@style/AppTheme.TextView"
         android:layout_width="match_parent"
         android:layout_height="@dimen/text_view_layout_height"
-        android:scrollbars = "vertical"
-        android:layout_weight="1" />
+        android:layout_weight="1"
+        android:scrollbars="vertical" />
 
     <TableLayout
         android:layout_width="match_parent"
@@ -149,9 +149,9 @@
                 android:text="@string/three_button" />
 
             <Button
-                android:id="@+id/cube_button"
+                android:id="@+id/random_exponent_button"
                 style="@style/AppTheme.Button"
-                android:text="@string/cube_button" />
+                android:text="@string/random_exponent_button" />
 
             <Button
                 android:id="@+id/plus_button"
@@ -170,9 +170,9 @@
             android:layout_weight="1">
 
             <Button
-                android:id="@+id/percent_button"
+                android:id="@+id/sqrt_button"
                 style="@style/AppTheme.Button"
-                android:text="@string/percent_button" />
+                android:text="@string/sqrt_button" />
 
             <Button
                 android:id="@+id/zero_button"
@@ -185,19 +185,14 @@
                 android:text="@string/dot_button" />
 
             <Button
-                android:id="@+id/random_exponent_button"
+                android:id="@+id/percent_button"
                 style="@style/AppTheme.Button"
-                android:text="@string/random_exponent_button" />
+                android:text="@string/percent_button" />
 
             <Button
                 android:id="@+id/equal_button"
                 style="@style/AppTheme.Button"
                 android:text="@string/equal_button" />
-
-            <Button
-                android:id="@+id/sqrt_button"
-                style="@style/AppTheme.Button"
-                android:text="@string/sqrt_button" />
         </TableRow>
     </TableLayout>
 </LinearLayout>
