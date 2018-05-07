@@ -12,7 +12,7 @@ import android.widget.Button;
 import android.widget.Switch;
 import android.widget.TextView;
 
-import static com.job.calculator.Formatter.putComma;
+import static com.job.calculator.Formatter.getCurrentNumberAsNumber;
 
 /**
  * Fragment for displaying calculator
@@ -29,7 +29,6 @@ public class CalculatorFragment extends Fragment {
     private double result;
     private Operations operation;
     private boolean isThereResult;
-    private boolean isThereDot;
 
     @Nullable
     @Override
@@ -60,95 +59,81 @@ public class CalculatorFragment extends Fragment {
         view.findViewById(R.id.zero_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (currentNumber.length() != 1 || Double.parseDouble(currentNumber) != 0) {
-                    appendNewCharToCurrentNumber('0');
-                    updateTextView(textView);
-                }
+                changeCurrentNumberAndUpdateState('0', textView);
             }
         });
 
         view.findViewById(R.id.one_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                appendNewCharToCurrentNumber('1');
-                updateTextView(textView);
+                changeCurrentNumberAndUpdateState('1', textView);
             }
         });
 
         view.findViewById(R.id.two_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                appendNewCharToCurrentNumber('2');
-                updateTextView(textView);
+                changeCurrentNumberAndUpdateState('2', textView);
             }
         });
 
         view.findViewById(R.id.three_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                appendNewCharToCurrentNumber('3');
-                updateTextView(textView);
+                changeCurrentNumberAndUpdateState('3', textView);
             }
         });
 
         view.findViewById(R.id.four_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                appendNewCharToCurrentNumber('4');
-                updateTextView(textView);
+                changeCurrentNumberAndUpdateState('4', textView);
             }
         });
 
         view.findViewById(R.id.five_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                appendNewCharToCurrentNumber('5');
-                updateTextView(textView);
+                changeCurrentNumberAndUpdateState('5', textView);
             }
         });
 
         view.findViewById(R.id.six_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                appendNewCharToCurrentNumber('6');
-                updateTextView(textView);
+                changeCurrentNumberAndUpdateState('6', textView);
             }
         });
 
         view.findViewById(R.id.seven_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                appendNewCharToCurrentNumber('7');
-                updateTextView(textView);
+                changeCurrentNumberAndUpdateState('7', textView);
             }
         });
 
         view.findViewById(R.id.eight_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                appendNewCharToCurrentNumber('8');
-                updateTextView(textView);
+                changeCurrentNumberAndUpdateState('8', textView);
             }
         });
 
         view.findViewById(R.id.nine_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                appendNewCharToCurrentNumber('9');
-                updateTextView(textView);
+                changeCurrentNumberAndUpdateState('9', textView);
             }
         });
 
         view.findViewById(R.id.dot_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!isThereDot) {
-                    isThereDot = true;
+                if (currentNumber.indexOf('.') == -1) {
                     if ("".equals(currentNumber)) {
                         currentNumber = "0";
                     }
-                    appendNewCharToCurrentNumber('.');
-                    updateTextView(textView);
+                    changeCurrentNumberAndUpdateState('.', textView);
                 }
             }
         });
@@ -156,60 +141,28 @@ public class CalculatorFragment extends Fragment {
         view.findViewById(R.id.minus_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                operation = operation == null && isThereResult ? Operations.MINUS : operation;
-
-                calculateResult(getCurrentNumberAsNumber());
-
-                currentNumber = "";
-                operation = Operations.MINUS;
-                String newText = dataInTextView + (Math.abs(result) == Double.POSITIVE_INFINITY ? String.valueOf(result) : putComma(String.valueOf(result))) + "\n" + operation;
-                textView.setText("");
-                textView.append(newText);
+                doOperation(Operations.MINUS, textView);
             }
         });
 
         view.findViewById(R.id.plus_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                operation = operation == null && isThereResult ? Operations.PLUS : operation;
-
-                calculateResult(getCurrentNumberAsNumber());
-
-                currentNumber = "";
-                operation = Operations.PLUS;
-                String newText = dataInTextView + (Math.abs(result) == Double.POSITIVE_INFINITY ? String.valueOf(result) : putComma(String.valueOf(result))) + "\n" + operation;
-                textView.setText("");
-                textView.append(newText);
+                doOperation(Operations.PLUS, textView);
             }
         });
 
         view.findViewById(R.id.multiply_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                operation = operation == null && isThereResult ? Operations.MULL : operation;
-
-                calculateResult(getCurrentNumberAsNumber());
-
-                currentNumber = "";
-                operation = Operations.MULL;
-                String newText = dataInTextView + (Math.abs(result) == Double.POSITIVE_INFINITY ? String.valueOf(result) : putComma(String.valueOf(result))) + "\n" + operation;
-                textView.setText("");
-                textView.append(newText);
+                doOperation(Operations.MULL, textView);
             }
         });
 
         view.findViewById(R.id.divide_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                operation = operation == null && isThereResult ? Operations.DIVIDE : operation;
-
-                calculateResult(getCurrentNumberAsNumber());
-
-                currentNumber = "";
-                operation = Operations.DIVIDE;
-                String newText = dataInTextView + (Math.abs(result) == Double.POSITIVE_INFINITY ? String.valueOf(result) : putComma(String.valueOf(result))) + "\n" + operation;
-                textView.setText("");
-                textView.append(newText);
+                doOperation(Operations.DIVIDE, textView);
             }
         });
 
@@ -218,19 +171,12 @@ public class CalculatorFragment extends Fragment {
             public void onClick(View v) {
                 operation = null;
                 isThereResult = true;
-                isThereDot = false;
                 if ("".equals(currentNumber)) {
                     currentNumber = String.valueOf(result);
                 }
                 result = Math.sqrt(Double.parseDouble(currentNumber));
-
-                dataInTextView += "\u221a " + (Math.abs(Double.parseDouble(currentNumber)) == Double.POSITIVE_INFINITY ? String.valueOf(Double.parseDouble(currentNumber)) : putComma(String.valueOf(Double.parseDouble(currentNumber)))) +
-                        "\n = " + (Math.abs(result) == Double.POSITIVE_INFINITY ? String.valueOf(result) : putComma(String.valueOf(result))) + "\n\n ";
-
-                currentNumber = "";
-                String newText = dataInTextView + (Math.abs(result) == Double.POSITIVE_INFINITY ? String.valueOf(result) : putComma(String.valueOf(result))) + "\n ";
-                textView.setText("");
-                textView.append(newText);
+                dataInTextView += Formatter.getAsSqrt(currentNumber, result);
+                updateStateAfterOperation(textView);
             }
         });
 
@@ -241,34 +187,26 @@ public class CalculatorFragment extends Fragment {
                 public void onClick(View v) {
                     operation = null;
                     isThereResult = true;
-                    isThereDot = false;
                     if ("".equals(currentNumber)) {
                         currentNumber = String.valueOf(result);
                     }
                     result = Math.pow(Double.parseDouble(currentNumber), 2);
+                    dataInTextView += Formatter.getAsSquare(currentNumber, result);
+                    updateStateAfterOperation(textView);
+                }
+            });
 
-                    dataInTextView += (Math.abs(Double.parseDouble(currentNumber)) == Double.POSITIVE_INFINITY ? String.valueOf(Double.parseDouble(currentNumber)) : putComma(String.valueOf(Double.parseDouble(currentNumber)))) +
-                            "\n ^ 2 \n = " + (Math.abs(result) == Double.POSITIVE_INFINITY ? String.valueOf(result) : putComma(String.valueOf(result))) + "\n\n ";
-
-                    currentNumber = "";
-                    String newText = dataInTextView + (Math.abs(result) == Double.POSITIVE_INFINITY ? String.valueOf(result) : putComma(String.valueOf(result))) + "\n ";
-                    textView.setText("");
-                    textView.append(newText);
+            view.findViewById(R.id.random_exponent_button).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    doOperation(Operations.RANDOM_EXPONENT, textView);
                 }
             });
 
             view.findViewById(R.id.percent_button).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    operation = operation == null && isThereResult ? Operations.PERCENT : operation;
-
-                    calculateResult(getCurrentNumberAsNumber());
-
-                    currentNumber = "";
-                    operation = Operations.PERCENT;
-                    String newText = dataInTextView + (Math.abs(result) == Double.POSITIVE_INFINITY ? String.valueOf(result) : putComma(String.valueOf(result))) + "\n" + operation;
-                    textView.setText("");
-                    textView.append(newText);
+                    doOperation(Operations.PERCENT, textView);
                 }
             });
 
@@ -277,24 +215,16 @@ public class CalculatorFragment extends Fragment {
                 public void onClick(View v) {
                     operation = null;
                     isThereResult = true;
-                    isThereDot = false;
                     if ("".equals(currentNumber)) {
                         currentNumber = String.valueOf(result);
                     }
-
                     result = Math.sin(Double.parseDouble(currentNumber));
-
                     boolean inDegrees = inDegrees(view);
                     if (inDegrees) {
                         result = Math.sin(Math.toRadians(Double.parseDouble(currentNumber)));
                     }
-
                     dataInTextView += Formatter.getAsSin(inDegrees, currentNumber, result);
-
-                    currentNumber = "";
-                    String newText = dataInTextView + (Math.abs(result) == Double.POSITIVE_INFINITY ? String.valueOf(result) : putComma(String.valueOf(result))) + "\n ";
-                    textView.setText("");
-                    textView.append(newText);
+                    updateStateAfterOperation(textView);
                 }
             });
 
@@ -303,24 +233,16 @@ public class CalculatorFragment extends Fragment {
                 public void onClick(View v) {
                     operation = null;
                     isThereResult = true;
-                    isThereDot = false;
                     if ("".equals(currentNumber)) {
                         currentNumber = String.valueOf(result);
                     }
-
                     result = Math.cos(Double.parseDouble(currentNumber));
-
                     boolean inDegrees = inDegrees(view);
                     if (inDegrees) {
                         result = Math.cos(Math.toRadians(Double.parseDouble(currentNumber)));
                     }
-
                     dataInTextView += Formatter.getAsCos(inDegrees, currentNumber, result);
-
-                    currentNumber = "";
-                    String newText = dataInTextView + (Math.abs(result) == Double.POSITIVE_INFINITY ? String.valueOf(result) : putComma(String.valueOf(result))) + "\n ";
-                    textView.setText("");
-                    textView.append(newText);
+                    updateStateAfterOperation(textView);
                 }
             });
 
@@ -329,24 +251,16 @@ public class CalculatorFragment extends Fragment {
                 public void onClick(View v) {
                     operation = null;
                     isThereResult = true;
-                    isThereDot = false;
                     if ("".equals(currentNumber)) {
                         currentNumber = String.valueOf(result);
                     }
-
                     result = Math.tan(Double.parseDouble(currentNumber));
-
                     boolean inDegrees = inDegrees(view);
                     if (inDegrees) {
                         result = Math.tan(Math.toRadians(Double.parseDouble(currentNumber)));
                     }
-
                     dataInTextView += Formatter.getAsTan(inDegrees, currentNumber, result);
-
-                    currentNumber = "";
-                    String newText = dataInTextView + (Math.abs(result) == Double.POSITIVE_INFINITY ? String.valueOf(result) : putComma(String.valueOf(result))) + "\n ";
-                    textView.setText("");
-                    textView.append(newText);
+                    updateStateAfterOperation(textView);
                 }
             });
 
@@ -355,47 +269,26 @@ public class CalculatorFragment extends Fragment {
                 public void onClick(View v) {
                     operation = null;
                     isThereResult = true;
-                    isThereDot = false;
                     if ("".equals(currentNumber)) {
                         currentNumber = String.valueOf(result);
                     }
-
                     result = 1 / Math.tan(Double.parseDouble(currentNumber));
 
                     boolean inDegrees = inDegrees(view);
                     if (inDegrees) {
                         result = 1 / Math.tan(Math.toRadians(Double.parseDouble(currentNumber)));
                     }
-
                     dataInTextView += Formatter.getAsCtg(inDegrees, currentNumber, result);
-
-                    currentNumber = "";
-                    String newText = dataInTextView + (Math.abs(result) == Double.POSITIVE_INFINITY ? String.valueOf(result) : putComma(String.valueOf(result))) + "\n ";
-                    textView.setText("");
-                    textView.append(newText);
+                    updateStateAfterOperation(textView);
                 }
             });
 
-            view.findViewById(R.id.random_exponent_button).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    operation = operation == null && isThereResult ? Operations.RANDOM_EXPONENT : operation;
-
-                    calculateResult(getCurrentNumberAsNumber());
-
-                    currentNumber = "";
-                    operation = Operations.RANDOM_EXPONENT;
-                    String newText = dataInTextView + (Math.abs(result) == Double.POSITIVE_INFINITY ? String.valueOf(result) : putComma(String.valueOf(result))) + "\n" + operation;
-                    textView.setText("");
-                    textView.append(newText);
-                }
-            });
 
             view.findViewById(R.id.pi_button).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     currentNumber = MATH_PI;
-                    isThereDot = true;
+                    isThereResult = operation != null;
                     updateTextView(textView);
                 }
             });
@@ -404,7 +297,7 @@ public class CalculatorFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
                     currentNumber = MATH_E;
-                    isThereDot = true;
+                    isThereResult = operation != null;
                     updateTextView(textView);
                 }
             });
@@ -414,11 +307,8 @@ public class CalculatorFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (!"".equals(currentNumber)) {
-                    String newNumber = currentNumber.substring(0, currentNumber.length() - 1);
-                    if (".".equals(currentNumber.substring(currentNumber.length() - 1, currentNumber.length()))) {
-                        isThereDot = false;
-                    }
-                    currentNumber = "0".equals(newNumber) ? "" : newNumber;
+                    currentNumber = currentNumber.substring(0, currentNumber.length() - 1);
+                    isThereResult = true;
                     updateTextView(textView);
                 }
             }
@@ -429,7 +319,6 @@ public class CalculatorFragment extends Fragment {
             public void onClick(View v) {
                 result = 0;
                 currentNumber = "";
-                isThereDot = false;
                 isThereResult = false;
                 operation = null;
                 dataInTextView = "";
@@ -443,7 +332,6 @@ public class CalculatorFragment extends Fragment {
             public void onClick(View v) {
                 result = 0;
                 currentNumber = "";
-                isThereDot = false;
                 isThereResult = false;
                 operation = null;
                 textView.setText("");
@@ -455,7 +343,7 @@ public class CalculatorFragment extends Fragment {
         view.findViewById(R.id.equal_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                double number = getCurrentNumberAsNumber();
+                double number = getCurrentNumberAsNumber(currentNumber);
 
                 double previousResult = result;
 
@@ -463,25 +351,44 @@ public class CalculatorFragment extends Fragment {
                     calculateResult(number);
                 }
 
-                if (operation == null && !" ".equals(getTextViewLastLine(textView))) {
+                if (operation == null && !"".equals(currentNumber)) {
                     result = number;
                 } else {
                     if (operation != null && !"".equals(currentNumber)) {
-                        dataInTextView += (Math.abs(previousResult) == Double.POSITIVE_INFINITY ? String.valueOf(previousResult) : putComma(String.valueOf(previousResult))) +
-                                "\n " + operation + " " +
-                                (Math.abs(Double.parseDouble(currentNumber)) == Double.POSITIVE_INFINITY ? currentNumber : putComma(currentNumber)) +
-                                "\n = " + (Math.abs(result) == Double.POSITIVE_INFINITY ? String.valueOf(result) : putComma(String.valueOf(result))) + "\n\n ";
+                        dataInTextView += Formatter.getAsEqual(previousResult, currentNumber, result, operation);
                     }
                 }
 
                 operation = null;
-                currentNumber = "";
-                String newText = dataInTextView + (Math.abs(result) == Double.POSITIVE_INFINITY ? String.valueOf(result) : putComma(String.valueOf(result))) + "\n ";
-                textView.setText("");
-                textView.append(newText);
+                updateStateAfterOperation(textView);
             }
         });
 
+    }
+
+    private void doOperation(Operations op, TextView textView) {
+        operation = operation == null && isThereResult ? op : operation;
+        calculateResult(getCurrentNumberAsNumber(currentNumber));
+        operation = op;
+        updateStateAfterOperation(textView);
+    }
+
+    private void changeCurrentNumberAndUpdateState(char c, TextView textView) {
+        if ("0".equals(currentNumber) && c != '.') {
+            currentNumber = String.valueOf(c);
+        } else {
+            if (currentNumber.length() < MAX_DIGITS) {
+                currentNumber += c;
+            }
+        }
+        isThereResult = operation != null;
+        updateTextView(textView);
+    }
+
+    private void updateStateAfterOperation(TextView textView) {
+        currentNumber = "";
+        textView.setText("");
+        textView.append(Formatter.getAsNewResult(dataInTextView, result, operation));
     }
 
     private boolean inDegrees(View view) {
@@ -489,12 +396,6 @@ public class CalculatorFragment extends Fragment {
         return degreeSwitcher.isChecked();
     }
 
-    private void appendNewCharToCurrentNumber(char newChar) {
-        if (currentNumber.length() < MAX_DIGITS) {
-            currentNumber += newChar;
-            isThereResult = operation != null;
-        }
-    }
 
     private void calculateResult(double number) {
         if (operation != null) {
@@ -519,30 +420,11 @@ public class CalculatorFragment extends Fragment {
         } else {
             result = number;
         }
-        isThereDot = false;
         isThereResult = true;
     }
 
-    private String getTextViewLastLine(TextView textView) {
-        String lines[] = textView.getText().toString().split("\\r?\\n");
-        return lines[lines.length - 1];
-    }
-
     private void updateTextView(TextView textView) {
-        String newText = getTextViewTextWithoutLastLine(textView) + (operation != null ? operation : "") + " " + putComma(currentNumber);
-        textView.setText(newText);
-    }
-
-    private String getTextViewTextWithoutLastLine(TextView textView) {
-        String[] text = textView.getText().toString().split("\\r?\\n");
-        StringBuilder stringBuilder = new StringBuilder();
-        for (int i = 0; i < text.length - 1; i++) {
-            stringBuilder.append(text[i]).append("\n");
-        }
-        return stringBuilder.toString();
-    }
-
-    public double getCurrentNumberAsNumber() {
-        return "".equals(currentNumber) ? 0 : Double.parseDouble(currentNumber);
+        textView.setText("");
+        textView.append(Formatter.appendChar(dataInTextView, result, operation, currentNumber));
     }
 }
