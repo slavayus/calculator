@@ -159,7 +159,7 @@ public class CalculatorFragment extends Fragment {
 
                 currentNumber = "";
                 operation = Operations.MINUS;
-                String newText = dataInTextView + putComma(String.valueOf(result)) + "\n" + operation;
+                String newText = dataInTextView + (Math.abs(result) == Double.POSITIVE_INFINITY ? String.valueOf(result) : putComma(String.valueOf(result))) + "\n" + operation;
                 textView.setText("");
                 textView.append(newText);
             }
@@ -174,7 +174,7 @@ public class CalculatorFragment extends Fragment {
 
                 currentNumber = "";
                 operation = Operations.PLUS;
-                String newText = dataInTextView + putComma(String.valueOf(result)) + "\n" + operation;
+                String newText = dataInTextView + (Math.abs(result) == Double.POSITIVE_INFINITY ? String.valueOf(result) : putComma(String.valueOf(result))) + "\n" + operation;
                 textView.setText("");
                 textView.append(newText);
             }
@@ -189,7 +189,7 @@ public class CalculatorFragment extends Fragment {
 
                 currentNumber = "";
                 operation = Operations.MULL;
-                String newText = dataInTextView + putComma(String.valueOf(result)) + "\n" + operation;
+                String newText = dataInTextView + (Math.abs(result) == Double.POSITIVE_INFINITY ? String.valueOf(result) : putComma(String.valueOf(result))) + "\n" + operation;
                 textView.setText("");
                 textView.append(newText);
             }
