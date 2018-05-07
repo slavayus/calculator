@@ -13,7 +13,7 @@ public enum Operations {
     }, DIVIDE {
         @Override
         public String toString() {
-            return "/";
+            return "\u00F7";
         }
     }, MINUS {
         @Override
