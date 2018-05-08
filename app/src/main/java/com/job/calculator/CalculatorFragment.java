@@ -9,6 +9,9 @@ import android.support.v4.app.Fragment;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -30,6 +33,7 @@ import com.job.calculator.commands.two.PercentCommand;
 import com.job.calculator.commands.two.PlusCommand;
 import com.job.calculator.commands.two.RandomExponentCommand;
 
+import static com.job.calculator.CalculatorActivity.THEME;
 import static com.job.calculator.Formatter.getCurrentNumberAsNumber;
 
 /**
@@ -60,7 +64,34 @@ public class CalculatorFragment extends Fragment {
 
         setClickListeners(view);
 
+        setHasOptionsMenu(true);
         return view;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.calculator_fragment, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.change_theme:
+                Log.d(TAG, "onOptionsItemSelected: in change theme");
+                if (getActivity() != null) {
+                    SharedPreferences preferences = getActivity().getPreferences(Context.MODE_PRIVATE);
+                    int currentTheme = preferences.getInt(THEME, R.style.LightTheme);
+                    SharedPreferences.Editor edit = preferences.edit();
+                    edit.putInt(THEME, currentTheme == R.style.DarkTheme ? R.style.LightTheme : R.style.DarkTheme);
+                    edit.apply();
+                    getActivity().recreate();
+                    Log.d(TAG, "onOptionsItemSelected: theme changed");
+                }
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     private void loadData() {
