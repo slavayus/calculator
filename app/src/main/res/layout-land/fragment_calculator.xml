@@ -54,6 +54,11 @@
                 android:id="@+id/tan_button"
                 style="@style/AppTheme.Button"
                 android:text="@string/tan_button" />
+
+            <Button
+                android:id="@+id/ms_button"
+                style="@style/AppTheme.Button"
+                android:text="@string/ms_button" />
         </TableRow>
 
         <TableRow
@@ -90,6 +95,12 @@
                 android:id="@+id/sin_button"
                 style="@style/AppTheme.Button"
                 android:text="@string/sin_button" />
+
+            <Button
+                android:id="@+id/mr_button"
+                style="@style/AppTheme.Button"
+                android:text="@string/mr_button" />
+
         </TableRow>
 
         <TableRow
@@ -126,6 +137,11 @@
                 android:id="@+id/cos_button"
                 style="@style/AppTheme.Button"
                 android:text="@string/cos_button" />
+
+            <Button
+                android:id="@+id/mc_button"
+                style="@style/AppTheme.Button"
+                android:text="@string/mc_button" />
         </TableRow>
 
         <TableRow
@@ -162,6 +178,10 @@
                 android:id="@+id/ctg_button"
                 style="@style/AppTheme.Button"
                 android:text="@string/ctg_button" />
+            <Button
+                android:id="@+id/mplus_button"
+                style="@style/AppTheme.Button"
+                android:text="@string/mplus_button" />
         </TableRow>
 
         <TableRow
@@ -198,6 +218,11 @@
                 android:id="@+id/degree_switch_button"
                 style="@style/AppTheme.Button"
                 android:text="@string/degree_switch_button" />
+
+            <Button
+                android:id="@+id/mminus_button"
+                style="@style/AppTheme.Button"
+                android:text="@string/mminus_button" />
         </TableRow>
     </TableLayout>
 </LinearLayout>
