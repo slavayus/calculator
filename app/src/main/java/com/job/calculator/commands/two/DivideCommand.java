@@ -1,10 +1,10 @@
-package com.job.calculator.commands;
+package com.job.calculator.commands.two;
 
 /**
  * Class for divide command
  */
 
-public class DivideCommand implements Command {
+public class DivideCommand implements CommandWithTwoArgument {
     @Override
     public double execute(double result, double currentNumber) {
         return result / currentNumber;

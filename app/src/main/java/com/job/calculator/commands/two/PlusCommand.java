@@ -1,10 +1,10 @@
-package com.job.calculator.commands;
+package com.job.calculator.commands.two;
 
 /**
  * Class for plus command
  */
 
-public class PlusCommand implements Command {
+public class PlusCommand implements CommandWithTwoArgument {
 
     @Override
     public double execute(double result, double currentNumber) {

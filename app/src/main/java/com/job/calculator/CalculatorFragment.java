@@ -12,13 +12,20 @@ import android.widget.Button;
 import android.widget.Switch;
 import android.widget.TextView;
 
-import com.job.calculator.commands.Command;
-import com.job.calculator.commands.DivideCommand;
-import com.job.calculator.commands.MinusCommand;
-import com.job.calculator.commands.MullCommand;
-import com.job.calculator.commands.PercentCommand;
-import com.job.calculator.commands.PlusCommand;
-import com.job.calculator.commands.RandomExponentCommand;
+import com.job.calculator.commands.one.CommandWIthSingleArgument;
+import com.job.calculator.commands.one.SqrtCommand;
+import com.job.calculator.commands.one.SquareCommand;
+import com.job.calculator.commands.one.trigonometric.CosCommand;
+import com.job.calculator.commands.one.trigonometric.CtgCommand;
+import com.job.calculator.commands.one.trigonometric.SinCommand;
+import com.job.calculator.commands.one.trigonometric.TanCommand;
+import com.job.calculator.commands.two.CommandWithTwoArgument;
+import com.job.calculator.commands.two.DivideCommand;
+import com.job.calculator.commands.two.MinusCommand;
+import com.job.calculator.commands.two.MullCommand;
+import com.job.calculator.commands.two.PercentCommand;
+import com.job.calculator.commands.two.PlusCommand;
+import com.job.calculator.commands.two.RandomExponentCommand;
 
 import static com.job.calculator.Formatter.getCurrentNumberAsNumber;
 
@@ -35,7 +42,7 @@ public class CalculatorFragment extends Fragment {
     private String currentNumber = "";
     private String dataInTextView = "";
     private double result;
-    private Command command;
+    private CommandWithTwoArgument command;
     private boolean isThereResult;
 
     @Nullable
@@ -177,14 +184,7 @@ public class CalculatorFragment extends Fragment {
         view.findViewById(R.id.sqrt_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                command = null;
-                isThereResult = true;
-                if ("".equals(currentNumber)) {
-                    currentNumber = String.valueOf(result);
-                }
-                result = Math.sqrt(Double.parseDouble(currentNumber));
-                dataInTextView += Formatter.getAsSqrt(currentNumber, result);
-                updateStateAfterOperation(textView);
+                calculateSingleArgument(new SqrtCommand(), textView);
             }
         });
 
@@ -193,14 +193,7 @@ public class CalculatorFragment extends Fragment {
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    command = null;
-                    isThereResult = true;
-                    if ("".equals(currentNumber)) {
-                        currentNumber = String.valueOf(result);
-                    }
-                    result = Math.pow(Double.parseDouble(currentNumber), 2);
-                    dataInTextView += Formatter.getAsSquare(currentNumber, result);
-                    updateStateAfterOperation(textView);
+                    calculateSingleArgument(new SquareCommand(), textView);
                 }
             });
 
@@ -221,73 +214,28 @@ public class CalculatorFragment extends Fragment {
             view.findViewById(R.id.sin_button).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    command = null;
-                    isThereResult = true;
-                    if ("".equals(currentNumber)) {
-                        currentNumber = String.valueOf(result);
-                    }
-                    result = Math.sin(Double.parseDouble(currentNumber));
-                    boolean inDegrees = inDegrees(view);
-                    if (inDegrees) {
-                        result = Math.sin(Math.toRadians(Double.parseDouble(currentNumber)));
-                    }
-                    dataInTextView += Formatter.getAsSin(inDegrees, currentNumber, result);
-                    updateStateAfterOperation(textView);
+                    calculateSingleArgument(new SinCommand(inDegrees(view)), textView);
                 }
             });
 
             view.findViewById(R.id.cos_button).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    command = null;
-                    isThereResult = true;
-                    if ("".equals(currentNumber)) {
-                        currentNumber = String.valueOf(result);
-                    }
-                    result = Math.cos(Double.parseDouble(currentNumber));
-                    boolean inDegrees = inDegrees(view);
-                    if (inDegrees) {
-                        result = Math.cos(Math.toRadians(Double.parseDouble(currentNumber)));
-                    }
-                    dataInTextView += Formatter.getAsCos(inDegrees, currentNumber, result);
-                    updateStateAfterOperation(textView);
+                    calculateSingleArgument(new CosCommand(inDegrees(view)), textView);
                 }
             });
 
             view.findViewById(R.id.tan_button).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    command = null;
-                    isThereResult = true;
-                    if ("".equals(currentNumber)) {
-                        currentNumber = String.valueOf(result);
-                    }
-                    result = Math.tan(Double.parseDouble(currentNumber));
-                    boolean inDegrees = inDegrees(view);
-                    if (inDegrees) {
-                        result = Math.tan(Math.toRadians(Double.parseDouble(currentNumber)));
-                    }
-                    dataInTextView += Formatter.getAsTan(inDegrees, currentNumber, result);
-                    updateStateAfterOperation(textView);
+                    calculateSingleArgument(new TanCommand(inDegrees(view)), textView);
                 }
             });
 
             view.findViewById(R.id.ctg_button).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    command = null;
-                    isThereResult = true;
-                    if ("".equals(currentNumber)) {
-                        currentNumber = String.valueOf(result);
-                    }
-                    result = 1 / Math.tan(Double.parseDouble(currentNumber));
-
-                    boolean inDegrees = inDegrees(view);
-                    if (inDegrees) {
-                        result = 1 / Math.tan(Math.toRadians(Double.parseDouble(currentNumber)));
-                    }
-                    dataInTextView += Formatter.getAsCtg(inDegrees, currentNumber, result);
-                    updateStateAfterOperation(textView);
+                    calculateSingleArgument(new CtgCommand(inDegrees(view)), textView);
                 }
             });
 
@@ -374,7 +322,18 @@ public class CalculatorFragment extends Fragment {
 
     }
 
-    private void doOperation(Command comm, int addToCurrentNumber, TextView textView) {
+    private void calculateSingleArgument(CommandWIthSingleArgument comm, TextView textView) {
+        command = null;
+        isThereResult = true;
+        if ("".equals(currentNumber)) {
+            currentNumber = String.valueOf(result);
+        }
+        result = comm.execute(getCurrentNumberAsNumber(currentNumber));
+        dataInTextView += comm;
+        updateStateAfterOperation(textView);
+    }
+
+    private void doOperation(CommandWithTwoArgument comm, int addToCurrentNumber, TextView textView) {
         if (isThereResult) {
             command = comm;
         }
@@ -414,6 +373,6 @@ public class CalculatorFragment extends Fragment {
 
     private void updateTextView(TextView textView) {
         textView.setText("");
-        textView.append(Formatter.appendChar(dataInTextView, result, command, currentNumber));
+        textView.append(Formatter.appentText(dataInTextView, result, command, currentNumber));
     }
 }

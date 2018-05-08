@@ -1,10 +1,10 @@
-package com.job.calculator.commands;
+package com.job.calculator.commands.two;
 
 /**
  * Class for minus command
  */
 
-public class MinusCommand implements Command {
+public class MinusCommand implements CommandWithTwoArgument {
     @Override
     public double execute(double result, double currentNumber) {
         return result - currentNumber;
