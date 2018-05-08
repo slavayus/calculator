@@ -8,7 +8,26 @@ import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.Switch;
 import android.widget.TextView;
+
+import com.job.calculator.commands.one.CommandWIthSingleArgument;
+import com.job.calculator.commands.one.SqrtCommand;
+import com.job.calculator.commands.one.SquareCommand;
+import com.job.calculator.commands.one.trigonometric.CosCommand;
+import com.job.calculator.commands.one.trigonometric.CtgCommand;
+import com.job.calculator.commands.one.trigonometric.SinCommand;
+import com.job.calculator.commands.one.trigonometric.TanCommand;
+import com.job.calculator.commands.two.CommandWithTwoArgument;
+import com.job.calculator.commands.two.DivideCommand;
+import com.job.calculator.commands.two.MinusCommand;
+import com.job.calculator.commands.two.MullCommand;
+import com.job.calculator.commands.two.PercentCommand;
+import com.job.calculator.commands.two.PlusCommand;
+import com.job.calculator.commands.two.RandomExponentCommand;
+
+import static com.job.calculator.Formatter.getCurrentNumberAsNumber;
 
 /**
  * Fragment for displaying calculator
@@ -16,15 +35,15 @@ import android.widget.TextView;
 
 public class CalculatorFragment extends Fragment {
     private static final String TAG = "CalculatorFragment";
+    private static final String MATH_PI = "3.141592";
+    private static final String MATH_E = "2.718281";
     private static final String TASKS = "TASKS";
     private static final int MAX_DIGITS = 10;
-    private static final char DIGIT_SEPARATOR = ',';
     private String currentNumber = "";
     private String dataInTextView = "";
     private double result;
-    private Operations operation;
+    private CommandWithTwoArgument command;
     private boolean isThereResult;
-    private boolean isThereDot;
 
     @Nullable
     @Override
@@ -55,182 +74,197 @@ public class CalculatorFragment extends Fragment {
         view.findViewById(R.id.zero_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (currentNumber.length() != 1 || Double.parseDouble(currentNumber) != 0) {
-                    appendNewCharToCurrentNumber('0');
-                    updateTextView(textView);
-                }
+                changeCurrentNumberAndUpdateState('0', textView);
             }
         });
 
         view.findViewById(R.id.one_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                appendNewCharToCurrentNumber('1');
-                updateTextView(textView);
+                changeCurrentNumberAndUpdateState('1', textView);
             }
         });
 
         view.findViewById(R.id.two_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                appendNewCharToCurrentNumber('2');
-                updateTextView(textView);
+                changeCurrentNumberAndUpdateState('2', textView);
             }
         });
 
         view.findViewById(R.id.three_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                appendNewCharToCurrentNumber('3');
-                updateTextView(textView);
+                changeCurrentNumberAndUpdateState('3', textView);
             }
         });
 
         view.findViewById(R.id.four_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                appendNewCharToCurrentNumber('4');
-                updateTextView(textView);
+                changeCurrentNumberAndUpdateState('4', textView);
             }
         });
 
         view.findViewById(R.id.five_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                appendNewCharToCurrentNumber('5');
-                updateTextView(textView);
+                changeCurrentNumberAndUpdateState('5', textView);
             }
         });
 
         view.findViewById(R.id.six_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                appendNewCharToCurrentNumber('6');
-                updateTextView(textView);
+                changeCurrentNumberAndUpdateState('6', textView);
             }
         });
 
         view.findViewById(R.id.seven_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                appendNewCharToCurrentNumber('7');
-                updateTextView(textView);
+                changeCurrentNumberAndUpdateState('7', textView);
             }
         });
 
         view.findViewById(R.id.eight_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                appendNewCharToCurrentNumber('8');
-                updateTextView(textView);
+                changeCurrentNumberAndUpdateState('8', textView);
             }
         });
 
         view.findViewById(R.id.nine_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                appendNewCharToCurrentNumber('9');
-                updateTextView(textView);
+                changeCurrentNumberAndUpdateState('9', textView);
             }
         });
 
         view.findViewById(R.id.dot_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!isThereDot) {
-                    isThereDot = true;
+                if (currentNumber.indexOf('.') == -1) {
                     if ("".equals(currentNumber)) {
                         currentNumber = "0";
                     }
-                    appendNewCharToCurrentNumber('.');
-                    updateTextView(textView);
+                    changeCurrentNumberAndUpdateState('.', textView);
                 }
             }
         });
+
         view.findViewById(R.id.minus_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                operation = operation == null && isThereResult ? Operations.MINUS : operation;
-
-                calculateResult(getCurrentNumberAsNumber());
-
-                currentNumber = "";
-                operation = Operations.MINUS;
-                String newText = dataInTextView + putComma(String.valueOf(result)) + "\n" + operation;
-                textView.setText("");
-                textView.append(newText);
+                doOperation(new MinusCommand(), 0, textView);
             }
         });
 
         view.findViewById(R.id.plus_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                operation = operation == null && isThereResult ? Operations.PLUS : operation;
-
-                calculateResult(getCurrentNumberAsNumber());
-
-                currentNumber = "";
-                operation = Operations.PLUS;
-                String newText = dataInTextView + putComma(String.valueOf(result)) + "\n" + operation;
-                textView.setText("");
-                textView.append(newText);
+                doOperation(new PlusCommand(), 0, textView);
             }
         });
 
         view.findViewById(R.id.multiply_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                operation = operation == null && isThereResult ? Operations.MULL : operation;
-
-                calculateResult(getCurrentNumberAsNumber());
-
-                currentNumber = "";
-                operation = Operations.MULL;
-                String newText = dataInTextView + putComma(String.valueOf(result)) + "\n" + operation;
-                textView.setText("");
-                textView.append(newText);
+                doOperation(new MullCommand(), "".equals(currentNumber) ? 1 : 0, textView);
             }
         });
 
         view.findViewById(R.id.divide_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                operation = operation == null && isThereResult ? Operations.DIVIDE : operation;
-
-                calculateResult(getCurrentNumberAsNumber());
-
-                currentNumber = "";
-                operation = Operations.DIVIDE;
-                String newText = dataInTextView + (Math.abs(result) == Double.POSITIVE_INFINITY ? String.valueOf(result) : putComma(String.valueOf(result))) + "\n" + operation;
-                textView.setText("");
-                textView.append(newText);
+                doOperation(new DivideCommand(), "".equals(currentNumber) ? 1 : 0, textView);
             }
         });
 
-        view.findViewById(R.id.percent_button).setOnClickListener(new View.OnClickListener() {
+        view.findViewById(R.id.sqrt_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                operation = operation == null && isThereResult ? Operations.PERCENT : operation;
-
-                calculateResult(getCurrentNumberAsNumber());
-
-                currentNumber = "";
-                operation = Operations.PERCENT;
-                String newText = dataInTextView + (Math.abs(result) == Double.POSITIVE_INFINITY ? String.valueOf(result) : putComma(String.valueOf(result))) + "\n" + operation;
-                textView.setText("");
-                textView.append(newText);
+                calculateSingleArgument(new SqrtCommand(), textView);
             }
         });
+
+        Button button = view.findViewById(R.id.square_button);
+        if (button != null) {
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    calculateSingleArgument(new SquareCommand(), textView);
+                }
+            });
+
+            view.findViewById(R.id.random_exponent_button).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    doOperation(new RandomExponentCommand(), "".equals(currentNumber) ? 1 : 0, textView);
+                }
+            });
+
+            view.findViewById(R.id.percent_button).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    doOperation(new PercentCommand(), "".equals(currentNumber) ? 100 : 0, textView);
+                }
+            });
+
+            view.findViewById(R.id.sin_button).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    calculateSingleArgument(new SinCommand(inDegrees(view)), textView);
+                }
+            });
+
+            view.findViewById(R.id.cos_button).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    calculateSingleArgument(new CosCommand(inDegrees(view)), textView);
+                }
+            });
+
+            view.findViewById(R.id.tan_button).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    calculateSingleArgument(new TanCommand(inDegrees(view)), textView);
+                }
+            });
+
+            view.findViewById(R.id.ctg_button).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    calculateSingleArgument(new CtgCommand(inDegrees(view)), textView);
+                }
+            });
+
+
+            view.findViewById(R.id.pi_button).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    currentNumber = MATH_PI;
+                    isThereResult = command != null;
+                    updateTextView(textView);
+                }
+            });
+
+            view.findViewById(R.id.e_button).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    currentNumber = MATH_E;
+                    isThereResult = command != null;
+                    updateTextView(textView);
+                }
+            });
+        }
 
         view.findViewById(R.id.clear_last_char_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (!"".equals(currentNumber)) {
-                    String newNumber = currentNumber.substring(0, currentNumber.length() - 1);
-                    if (".".equals(currentNumber.substring(currentNumber.length() - 1, currentNumber.length()))) {
-                        isThereDot = false;
-                    }
-                    currentNumber = "0".equals(newNumber) ? "" : newNumber;
+                    currentNumber = currentNumber.substring(0, currentNumber.length() - 1);
+                    isThereResult = true;
                     updateTextView(textView);
                 }
             }
@@ -241,9 +275,8 @@ public class CalculatorFragment extends Fragment {
             public void onClick(View v) {
                 result = 0;
                 currentNumber = "";
-                isThereDot = false;
                 isThereResult = false;
-                operation = null;
+                command = null;
                 dataInTextView = "";
                 textView.setText("");
                 textView.append(" ");
@@ -255,9 +288,8 @@ public class CalculatorFragment extends Fragment {
             public void onClick(View v) {
                 result = 0;
                 currentNumber = "";
-                isThereDot = false;
                 isThereResult = false;
-                operation = null;
+                command = null;
                 textView.setText("");
                 textView.append(dataInTextView);
             }
@@ -267,7 +299,7 @@ public class CalculatorFragment extends Fragment {
         view.findViewById(R.id.equal_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                double number = getCurrentNumberAsNumber();
+                double number = getCurrentNumberAsNumber(currentNumber);
 
                 double previousResult = result;
 
@@ -275,87 +307,72 @@ public class CalculatorFragment extends Fragment {
                     calculateResult(number);
                 }
 
-                if (operation == null && !" ".equals(getTextViewLastLine(textView))) {
+                if (command == null && !"".equals(currentNumber)) {
                     result = number;
                 } else {
-                    if (operation != null && !"".equals(currentNumber)) {
-                        dataInTextView += putComma(String.valueOf(previousResult)) + "\n " + operation + " " + putComma(currentNumber) + "\n = " + putComma(String.valueOf(result)) + "\n\n ";
+                    if (command != null && !"".equals(currentNumber)) {
+                        dataInTextView += Formatter.getAsEqual(previousResult, currentNumber, result, command);
                     }
                 }
 
-                operation = null;
-                currentNumber = "";
-                String newText = dataInTextView + (Math.abs(result) == Double.POSITIVE_INFINITY ? String.valueOf(result) : putComma(String.valueOf(result))) + "\n ";
-                textView.setText("");
-                textView.append(newText);
+                command = null;
+                updateStateAfterOperation(textView);
             }
         });
 
     }
 
-    private void appendNewCharToCurrentNumber(char newChar) {
-        if (currentNumber.length() < MAX_DIGITS) {
-            currentNumber += newChar;
-            isThereResult = operation != null;
+    private void calculateSingleArgument(CommandWIthSingleArgument comm, TextView textView) {
+        command = null;
+        isThereResult = true;
+        if ("".equals(currentNumber)) {
+            currentNumber = String.valueOf(result);
         }
+        result = comm.execute(getCurrentNumberAsNumber(currentNumber));
+        dataInTextView += comm;
+        updateStateAfterOperation(textView);
     }
 
-    private void calculateResult(double number) {
-        if (operation != null) {
-            switch (operation) {
-                case MULL:
-                    result *= number + ("".equals(currentNumber) ? 1 : 0);
-                    break;
-                case PLUS:
-                    result += number;
-                    break;
-                case MINUS:
-                    result -= number;
-                    break;
-                case DIVIDE:
-                    result /= number + ("".equals(currentNumber) ? 1 : 0);
-                    break;
-                case PERCENT:
-                    result = result * (number + ("".equals(currentNumber) ? 100 : 0)) / 100;
-            }
-        } else {
-            result = number;
+    private void doOperation(CommandWithTwoArgument comm, int addToCurrentNumber, TextView textView) {
+        if (isThereResult) {
+            command = comm;
         }
-        isThereDot = false;
+        calculateResult(getCurrentNumberAsNumber(currentNumber) + addToCurrentNumber);
+        command = comm;
+        updateStateAfterOperation(textView);
+    }
+
+    private void changeCurrentNumberAndUpdateState(char c, TextView textView) {
+        if ("0".equals(currentNumber) && c != '.') {
+            currentNumber = String.valueOf(c);
+        } else {
+            if (currentNumber.length() < MAX_DIGITS) {
+                currentNumber += c;
+            }
+        }
+        isThereResult = command != null;
+        updateTextView(textView);
+    }
+
+    private void updateStateAfterOperation(TextView textView) {
+        currentNumber = "";
+        textView.setText("");
+        textView.append(Formatter.getAsNewResult(dataInTextView, result, command));
+    }
+
+    private boolean inDegrees(View view) {
+        Switch degreeSwitcher = view.findViewById(R.id.degree_switch_button);
+        return degreeSwitcher.isChecked();
+    }
+
+
+    private void calculateResult(double number) {
+        result = command != null ? command.execute(result, number) : number;
         isThereResult = true;
     }
 
-    private String getTextViewLastLine(TextView textView) {
-        String lines[] = textView.getText().toString().split("\\r?\\n");
-        return lines[lines.length - 1];
-    }
-
     private void updateTextView(TextView textView) {
-        String newText = getTextViewTextWithoutLastLine(textView) + (operation != null ? operation : "") + " " + putComma(currentNumber);
-        textView.setText(newText);
-    }
-
-    private String getTextViewTextWithoutLastLine(TextView textView) {
-        String[] text = textView.getText().toString().split("\\r?\\n");
-        StringBuilder stringBuilder = new StringBuilder();
-        for (int i = 0; i < text.length - 1; i++) {
-            stringBuilder.append(text[i]).append("\n");
-        }
-        return stringBuilder.toString();
-    }
-
-    private String putComma(String number) {
-        StringBuilder textWithComma = new StringBuilder(number);
-        int lastChar = number.length() > 0 && '-' == (number.charAt(0)) ? 1 : 0;
-        int firstChar = number.indexOf('.') != -1 ? number.indexOf('.') - 3 : number.length() - 3;
-        for (int i = firstChar; i > lastChar; i -= 3) {
-            textWithComma.insert(i, DIGIT_SEPARATOR);
-        }
-
-        return textWithComma.toString();
-    }
-
-    public double getCurrentNumberAsNumber() {
-        return "".equals(currentNumber) ? 0 : Double.parseDouble(currentNumber);
+        textView.setText("");
+        textView.append(Formatter.appentText(dataInTextView, result, command, currentNumber));
     }
 }

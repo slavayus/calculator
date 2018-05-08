@@ -4,7 +4,7 @@
     <string name="clear_last_task_button">C</string>
     <string name="clear_last_char_button">L</string>
     <string name="clear_all_tasks_button">AC</string>
-    <string name="divide_button">/</string>
+    <string name="divide_button">\u00F7</string>
     <string name="seven_button">7</string>
     <string name="eight_button">8</string>
     <string name="nine_button">9</string>
@@ -20,4 +20,15 @@
     <string name="zero_button">0</string>
     <string name="dot_button">.</string>
     <string name="equal_button">=</string>
+    <string name="pi_button">\u03C0</string>
+    <string name="e_button">e</string>
+    <string name="square_button">^2</string>
+    <string name="cube_button">^3</string>
+    <string name="random_exponent_button">^x</string>
+    <string name="tan_button">tan</string>
+    <string name="sin_button">sin</string>
+    <string name="cos_button">cos</string>
+    <string name="ctg_button">ctg</string>
+    <string name="sqrt_button">\u221a</string>
+    <string name="degree_switch_button">deg</string>
 </resources>
