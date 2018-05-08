@@ -1,10 +1,13 @@
 package com.job.calculator;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.method.ScrollingMovementMethod;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,9 +38,11 @@ import static com.job.calculator.Formatter.getCurrentNumberAsNumber;
 
 public class CalculatorFragment extends Fragment {
     private static final String TAG = "CalculatorFragment";
+    private static final String BUFFER = "BUFFER";
+    private static final String TASKS = "TASKS";
+    private static final String RESULT = "RESULT";
     private static final String MATH_PI = "3.141592";
     private static final String MATH_E = "2.718281";
-    private static final String TASKS = "TASKS";
     private static final int MAX_DIGITS = 10;
     private String currentNumber = "";
     private String dataInTextView = "";
@@ -51,27 +56,44 @@ public class CalculatorFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_calculator, container, false);
 
-        if (savedInstanceState != null) {
-            dataInTextView = savedInstanceState.getString(TASKS);
-        }
+        loadData();
 
-        mBuffer = new Buffer(0);
         setClickListeners(view);
 
         return view;
     }
 
+    private void loadData() {
+        mBuffer = new Buffer(0);
+        if (getActivity() != null) {
+            SharedPreferences preferences = getActivity().getPreferences(Context.MODE_PRIVATE);
+            mBuffer.save(Double.parseDouble(preferences.getString(BUFFER, "0")));
+            dataInTextView = preferences.getString(TASKS, "");
+            result = Double.parseDouble(preferences.getString(RESULT, "0"));
+            isThereResult = true;
+            Log.d(TAG, "loadData: data loaded");
+        }
+    }
+
     @Override
-    public void onSaveInstanceState(@NonNull Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putString(TASKS, dataInTextView);
+    public void onStop() {
+        super.onStop();
+        if (getActivity() != null) {
+            SharedPreferences preferences = getActivity().getPreferences(Context.MODE_PRIVATE);
+            SharedPreferences.Editor edit = preferences.edit();
+            edit.putString(BUFFER, String.valueOf(mBuffer.read()));
+            edit.putString(TASKS, dataInTextView);
+            edit.putString(RESULT, String.valueOf(result));
+            edit.apply();
+            Log.d(TAG, "onDestroy: data saved");
+        }
     }
 
     public void setClickListeners(final View view) {
         final TextView textView = view.findViewById(R.id.textView);
 
         textView.setMovementMethod(new ScrollingMovementMethod());
-        textView.append(dataInTextView);
+        updateTextView(textView);
 
         view.findViewById(R.id.zero_button).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -372,7 +394,7 @@ public class CalculatorFragment extends Fragment {
     }
 
     private void doOperation(CommandWithTwoArgument comm, int addToCurrentNumber, TextView textView) {
-        if (isThereResult) {
+        if (command == null && isThereResult) {
             command = comm;
         }
         calculateResult(getCurrentNumberAsNumber(currentNumber) + addToCurrentNumber);
