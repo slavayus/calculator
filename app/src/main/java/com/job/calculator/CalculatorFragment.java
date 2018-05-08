@@ -44,6 +44,7 @@ public class CalculatorFragment extends Fragment {
     private double result;
     private CommandWithTwoArgument command;
     private boolean isThereResult;
+    private Buffer mBuffer;
 
     @Nullable
     @Override
@@ -54,6 +55,7 @@ public class CalculatorFragment extends Fragment {
             dataInTextView = savedInstanceState.getString(TASKS);
         }
 
+        mBuffer = new Buffer(0);
         setClickListeners(view);
 
         return view;
@@ -188,7 +190,7 @@ public class CalculatorFragment extends Fragment {
             }
         });
 
-        Button button = view.findViewById(R.id.square_button);
+        final Button button = view.findViewById(R.id.square_button);
         if (button != null) {
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -255,6 +257,42 @@ public class CalculatorFragment extends Fragment {
                     currentNumber = MATH_E;
                     isThereResult = command != null;
                     updateTextView(textView);
+                }
+            });
+
+            view.findViewById(R.id.ms_button).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mBuffer.save(result);
+                }
+            });
+
+            view.findViewById(R.id.mr_button).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    result = mBuffer.read();
+                    updateTextView(textView);
+                }
+            });
+
+            view.findViewById(R.id.mc_button).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mBuffer.clear();
+                }
+            });
+
+            view.findViewById(R.id.mplus_button).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mBuffer.plus(result);
+                }
+            });
+
+            view.findViewById(R.id.mminus_button).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mBuffer.minus(result);
                 }
             });
         }
