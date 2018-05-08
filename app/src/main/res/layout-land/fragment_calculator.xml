@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/AppTheme.Layout"
+    style="@style/Layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
     <TextView
         android:id="@+id/textView"
-        style="@style/AppTheme.TextView"
+        style="@style/TextView"
         android:layout_width="match_parent"
         android:layout_height="@dimen/text_view_layout_height"
         android:layout_weight="1"
@@ -27,37 +27,37 @@
 
             <Button
                 android:id="@+id/clear_all_tasks_buton"
-                style="@style/AppTheme.Button"
+                style="@style/Button"
                 android:text="@string/clear_all_tasks_button" />
 
             <Button
                 android:id="@+id/clear_last_task_button"
-                style="@style/AppTheme.Button"
+                style="@style/Button"
                 android:text="@string/clear_last_task_button" />
 
             <ImageButton
                 android:id="@+id/clear_last_char_button"
-                style="@style/AppTheme.ImageButton"
+                style="@style/ImageButton"
                 android:contentDescription="@string/clear_last_char_button" />
 
             <Button
                 android:id="@+id/pi_button"
-                style="@style/AppTheme.Button"
+                style="@style/Button"
                 android:text="@string/pi_button" />
 
             <Button
                 android:id="@+id/divide_button"
-                style="@style/AppTheme.Button"
+                style="@style/Button"
                 android:text="@string/divide_button" />
 
             <Button
                 android:id="@+id/tan_button"
-                style="@style/AppTheme.Button"
+                style="@style/Button"
                 android:text="@string/tan_button" />
 
             <Button
                 android:id="@+id/ms_button"
-                style="@style/AppTheme.Button"
+                style="@style/Button"
                 android:text="@string/ms_button" />
         </TableRow>
 
@@ -68,37 +68,37 @@
 
             <Button
                 android:id="@+id/seven_button"
-                style="@style/AppTheme.Button"
+                style="@style/Button"
                 android:text="@string/seven_button" />
 
             <Button
                 android:id="@+id/eight_button"
-                style="@style/AppTheme.Button"
+                style="@style/Button"
                 android:text="@string/eight_button" />
 
             <Button
                 android:id="@+id/nine_button"
-                style="@style/AppTheme.Button"
+                style="@style/Button"
                 android:text="@string/nine_button" />
 
             <Button
                 android:id="@+id/e_button"
-                style="@style/AppTheme.Button"
+                style="@style/Button"
                 android:text="@string/e_button" />
 
             <Button
                 android:id="@+id/multiply_button"
-                style="@style/AppTheme.Button"
+                style="@style/Button"
                 android:text="@string/multiply_button" />
 
             <Button
                 android:id="@+id/sin_button"
-                style="@style/AppTheme.Button"
+                style="@style/Button"
                 android:text="@string/sin_button" />
 
             <Button
                 android:id="@+id/mr_button"
-                style="@style/AppTheme.Button"
+                style="@style/Button"
                 android:text="@string/mr_button" />
 
         </TableRow>
@@ -110,37 +110,37 @@
 
             <Button
                 android:id="@+id/four_button"
-                style="@style/AppTheme.Button"
+                style="@style/Button"
                 android:text="@string/four_button" />
 
             <Button
                 android:id="@+id/five_button"
-                style="@style/AppTheme.Button"
+                style="@style/Button"
                 android:text="@string/five_button" />
 
             <Button
                 android:id="@+id/six_button"
-                style="@style/AppTheme.Button"
+                style="@style/Button"
                 android:text="@string/six_button" />
 
             <Button
                 android:id="@+id/square_button"
-                style="@style/AppTheme.Button"
+                style="@style/Button"
                 android:text="@string/square_button" />
 
             <Button
                 android:id="@+id/minus_button"
-                style="@style/AppTheme.Button"
+                style="@style/Button"
                 android:text="@string/minus_button" />
 
             <Button
                 android:id="@+id/cos_button"
-                style="@style/AppTheme.Button"
+                style="@style/Button"
                 android:text="@string/cos_button" />
 
             <Button
                 android:id="@+id/mc_button"
-                style="@style/AppTheme.Button"
+                style="@style/Button"
                 android:text="@string/mc_button" />
         </TableRow>
 
@@ -151,36 +151,37 @@
 
             <Button
                 android:id="@+id/one_button"
-                style="@style/AppTheme.Button"
+                style="@style/Button"
                 android:text="@string/one_button" />
 
             <Button
                 android:id="@+id/two_button"
-                style="@style/AppTheme.Button"
+                style="@style/Button"
                 android:text="@string/two_button" />
 
             <Button
                 android:id="@+id/three_button"
-                style="@style/AppTheme.Button"
+                style="@style/Button"
                 android:text="@string/three_button" />
 
             <Button
                 android:id="@+id/random_exponent_button"
-                style="@style/AppTheme.Button"
+                style="@style/Button"
                 android:text="@string/random_exponent_button" />
 
             <Button
                 android:id="@+id/plus_button"
-                style="@style/AppTheme.Button"
+                style="@style/Button"
                 android:text="@string/plus_button" />
 
             <Button
                 android:id="@+id/ctg_button"
-                style="@style/AppTheme.Button"
+                style="@style/Button"
                 android:text="@string/ctg_button" />
+
             <Button
                 android:id="@+id/mplus_button"
-                style="@style/AppTheme.Button"
+                style="@style/Button"
                 android:text="@string/mplus_button" />
         </TableRow>
 
@@ -191,37 +192,37 @@
 
             <Button
                 android:id="@+id/sqrt_button"
-                style="@style/AppTheme.Button"
+                style="@style/Button"
                 android:text="@string/sqrt_button" />
 
             <Button
                 android:id="@+id/zero_button"
-                style="@style/AppTheme.Button"
+                style="@style/Button"
                 android:text="@string/zero_button" />
 
             <Button
                 android:id="@+id/dot_button"
-                style="@style/AppTheme.Button"
+                style="@style/Button"
                 android:text="@string/dot_button" />
 
             <Button
                 android:id="@+id/percent_button"
-                style="@style/AppTheme.Button"
+                style="@style/Button"
                 android:text="@string/percent_button" />
 
             <Button
                 android:id="@+id/equal_button"
-                style="@style/AppTheme.Button"
+                style="@style/Button"
                 android:text="@string/equal_button" />
 
             <Switch
                 android:id="@+id/degree_switch_button"
-                style="@style/AppTheme.Button"
+                style="@style/Button"
                 android:text="@string/degree_switch_button" />
 
             <Button
                 android:id="@+id/mminus_button"
-                style="@style/AppTheme.Button"
+                style="@style/Button"
                 android:text="@string/mminus_button" />
         </TableRow>
     </TableLayout>
