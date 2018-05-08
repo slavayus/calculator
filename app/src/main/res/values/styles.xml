@@ -5,6 +5,7 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="backspaceButton">@drawable/backspace_button_light</item>
+        <item name="changeColor">@drawable/ic_change_color_light</item>
         <item name="actionBarStyle">@style/MyActionBar</item>
     </style>
 
@@ -13,6 +14,7 @@
         <item name="colorPrimaryDark">@color/darkColorPrimaryDark</item>
         <item name="colorAccent">@color/darkColorAccent</item>
         <item name="backspaceButton">@drawable/backspace_button_dark</item>
+        <item name="changeColor">@drawable/ic_change_color_dark</item>
         <item name="actionBarStyle">@style/MyActionBar</item>
     </style>
 
