@@ -1,5 +1,7 @@
 package com.job.calculator;
 
+import com.job.calculator.commands.Command;
+
 /**
  * Class for formatting the text
  */
@@ -44,9 +46,9 @@ class Formatter {
         return textWithComma.toString();
     }
 
-    static String appendChar(String dataInTextView, double result, Operations operation, String currentNumber) {
+    static String appendChar(String dataInTextView, double result, Command command, String currentNumber) {
         return dataInTextView + (Math.abs(result) == Double.POSITIVE_INFINITY ? String.valueOf(result) : putComma(String.valueOf(result))) + "\n " +
-                (operation != null ? operation : "") + " " +
+                (command != null ? command : "") + " " +
                 (Math.abs(getCurrentNumberAsNumber(currentNumber)) == Double.POSITIVE_INFINITY ? currentNumber : putComma(currentNumber));
     }
 
@@ -55,8 +57,8 @@ class Formatter {
         return "".equals(currentNumber) ? 0 : Double.parseDouble(currentNumber);
     }
 
-    static String getAsNewResult(String dataInTextView, double result, Operations operation) {
-        return dataInTextView + (Math.abs(result) == Double.POSITIVE_INFINITY ? String.valueOf(result) : putComma(String.valueOf(result))) + "\n" + (operation == null ? "" : operation);
+    static String getAsNewResult(String dataInTextView, double result, Command command) {
+        return dataInTextView + (Math.abs(result) == Double.POSITIVE_INFINITY ? String.valueOf(result) : putComma(String.valueOf(result))) + "\n" + (command == null ? "" : command);
     }
 
     static String getAsSqrt(String currentNumber, double result) {
@@ -69,9 +71,9 @@ class Formatter {
                 "\n ^ 2 \n = " + (Math.abs(result) == Double.POSITIVE_INFINITY ? String.valueOf(result) : putComma(String.valueOf(result))) + "\n\n ";
     }
 
-    static String getAsEqual(double previousResult, String currentNumber, double result, Operations operation) {
+    static String getAsEqual(double previousResult, String currentNumber, double result, Command command) {
         return (Math.abs(previousResult) == Double.POSITIVE_INFINITY ? String.valueOf(previousResult) : putComma(String.valueOf(previousResult))) +
-                "\n " + operation + " " +
+                "\n " + command + " " +
                 (Math.abs(Double.parseDouble(currentNumber)) == Double.POSITIVE_INFINITY ? currentNumber : putComma(currentNumber)) +
                 "\n = " + (Math.abs(result) == Double.POSITIVE_INFINITY ? String.valueOf(result) : putComma(String.valueOf(result))) + "\n\n ";
     }

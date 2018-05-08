@@ -12,6 +12,14 @@ import android.widget.Button;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import com.job.calculator.commands.Command;
+import com.job.calculator.commands.DivideCommand;
+import com.job.calculator.commands.MinusCommand;
+import com.job.calculator.commands.MullCommand;
+import com.job.calculator.commands.PercentCommand;
+import com.job.calculator.commands.PlusCommand;
+import com.job.calculator.commands.RandomExponentCommand;
+
 import static com.job.calculator.Formatter.getCurrentNumberAsNumber;
 
 /**
@@ -27,7 +35,7 @@ public class CalculatorFragment extends Fragment {
     private String currentNumber = "";
     private String dataInTextView = "";
     private double result;
-    private Operations operation;
+    private Command command;
     private boolean isThereResult;
 
     @Nullable
@@ -141,35 +149,35 @@ public class CalculatorFragment extends Fragment {
         view.findViewById(R.id.minus_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                doOperation(Operations.MINUS, textView);
+                doOperation(new MinusCommand(), 0, textView);
             }
         });
 
         view.findViewById(R.id.plus_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                doOperation(Operations.PLUS, textView);
+                doOperation(new PlusCommand(), 0, textView);
             }
         });
 
         view.findViewById(R.id.multiply_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                doOperation(Operations.MULL, textView);
+                doOperation(new MullCommand(), "".equals(currentNumber) ? 1 : 0, textView);
             }
         });
 
         view.findViewById(R.id.divide_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                doOperation(Operations.DIVIDE, textView);
+                doOperation(new DivideCommand(), "".equals(currentNumber) ? 1 : 0, textView);
             }
         });
 
         view.findViewById(R.id.sqrt_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                operation = null;
+                command = null;
                 isThereResult = true;
                 if ("".equals(currentNumber)) {
                     currentNumber = String.valueOf(result);
@@ -185,7 +193,7 @@ public class CalculatorFragment extends Fragment {
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    operation = null;
+                    command = null;
                     isThereResult = true;
                     if ("".equals(currentNumber)) {
                         currentNumber = String.valueOf(result);
@@ -199,21 +207,21 @@ public class CalculatorFragment extends Fragment {
             view.findViewById(R.id.random_exponent_button).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    doOperation(Operations.RANDOM_EXPONENT, textView);
+                    doOperation(new RandomExponentCommand(), "".equals(currentNumber) ? 1 : 0, textView);
                 }
             });
 
             view.findViewById(R.id.percent_button).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    doOperation(Operations.PERCENT, textView);
+                    doOperation(new PercentCommand(), "".equals(currentNumber) ? 100 : 0, textView);
                 }
             });
 
             view.findViewById(R.id.sin_button).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    operation = null;
+                    command = null;
                     isThereResult = true;
                     if ("".equals(currentNumber)) {
                         currentNumber = String.valueOf(result);
@@ -231,7 +239,7 @@ public class CalculatorFragment extends Fragment {
             view.findViewById(R.id.cos_button).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    operation = null;
+                    command = null;
                     isThereResult = true;
                     if ("".equals(currentNumber)) {
                         currentNumber = String.valueOf(result);
@@ -249,7 +257,7 @@ public class CalculatorFragment extends Fragment {
             view.findViewById(R.id.tan_button).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    operation = null;
+                    command = null;
                     isThereResult = true;
                     if ("".equals(currentNumber)) {
                         currentNumber = String.valueOf(result);
@@ -267,7 +275,7 @@ public class CalculatorFragment extends Fragment {
             view.findViewById(R.id.ctg_button).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    operation = null;
+                    command = null;
                     isThereResult = true;
                     if ("".equals(currentNumber)) {
                         currentNumber = String.valueOf(result);
@@ -288,7 +296,7 @@ public class CalculatorFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
                     currentNumber = MATH_PI;
-                    isThereResult = operation != null;
+                    isThereResult = command != null;
                     updateTextView(textView);
                 }
             });
@@ -297,7 +305,7 @@ public class CalculatorFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
                     currentNumber = MATH_E;
-                    isThereResult = operation != null;
+                    isThereResult = command != null;
                     updateTextView(textView);
                 }
             });
@@ -320,7 +328,7 @@ public class CalculatorFragment extends Fragment {
                 result = 0;
                 currentNumber = "";
                 isThereResult = false;
-                operation = null;
+                command = null;
                 dataInTextView = "";
                 textView.setText("");
                 textView.append(" ");
@@ -333,7 +341,7 @@ public class CalculatorFragment extends Fragment {
                 result = 0;
                 currentNumber = "";
                 isThereResult = false;
-                operation = null;
+                command = null;
                 textView.setText("");
                 textView.append(dataInTextView);
             }
@@ -351,25 +359,27 @@ public class CalculatorFragment extends Fragment {
                     calculateResult(number);
                 }
 
-                if (operation == null && !"".equals(currentNumber)) {
+                if (command == null && !"".equals(currentNumber)) {
                     result = number;
                 } else {
-                    if (operation != null && !"".equals(currentNumber)) {
-                        dataInTextView += Formatter.getAsEqual(previousResult, currentNumber, result, operation);
+                    if (command != null && !"".equals(currentNumber)) {
+                        dataInTextView += Formatter.getAsEqual(previousResult, currentNumber, result, command);
                     }
                 }
 
-                operation = null;
+                command = null;
                 updateStateAfterOperation(textView);
             }
         });
 
     }
 
-    private void doOperation(Operations op, TextView textView) {
-        operation = operation == null && isThereResult ? op : operation;
-        calculateResult(getCurrentNumberAsNumber(currentNumber));
-        operation = op;
+    private void doOperation(Command comm, int addToCurrentNumber, TextView textView) {
+        if (isThereResult) {
+            command = comm;
+        }
+        calculateResult(getCurrentNumberAsNumber(currentNumber) + addToCurrentNumber);
+        command = comm;
         updateStateAfterOperation(textView);
     }
 
@@ -381,14 +391,14 @@ public class CalculatorFragment extends Fragment {
                 currentNumber += c;
             }
         }
-        isThereResult = operation != null;
+        isThereResult = command != null;
         updateTextView(textView);
     }
 
     private void updateStateAfterOperation(TextView textView) {
         currentNumber = "";
         textView.setText("");
-        textView.append(Formatter.getAsNewResult(dataInTextView, result, operation));
+        textView.append(Formatter.getAsNewResult(dataInTextView, result, command));
     }
 
     private boolean inDegrees(View view) {
@@ -398,33 +408,12 @@ public class CalculatorFragment extends Fragment {
 
 
     private void calculateResult(double number) {
-        if (operation != null) {
-            switch (operation) {
-                case MULL:
-                    result *= number + ("".equals(currentNumber) ? 1 : 0);
-                    break;
-                case PLUS:
-                    result += number;
-                    break;
-                case MINUS:
-                    result -= number;
-                    break;
-                case DIVIDE:
-                    result /= number + ("".equals(currentNumber) ? 1 : 0);
-                    break;
-                case PERCENT:
-                    result = result * (number + ("".equals(currentNumber) ? 100 : 0)) / 100;
-                case RANDOM_EXPONENT:
-                    result = Math.pow(result, (number + ("".equals(currentNumber) ? 1 : 0)));
-            }
-        } else {
-            result = number;
-        }
+        result = command != null ? command.execute(result, number) : number;
         isThereResult = true;
     }
 
     private void updateTextView(TextView textView) {
         textView.setText("");
-        textView.append(Formatter.appendChar(dataInTextView, result, operation, currentNumber));
+        textView.append(Formatter.appendChar(dataInTextView, result, command, currentNumber));
     }
 }
