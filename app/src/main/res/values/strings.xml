@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">calculator</string>
+    <string name="app_name">Калькулятор</string>
     <string name="plus_button">+</string>
     <string name="clear_last_task_button">C</string>
     <string name="clear_last_char_button">L</string>
