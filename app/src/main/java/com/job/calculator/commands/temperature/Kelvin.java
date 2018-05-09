@@ -1,17 +1,19 @@
 package com.job.calculator.commands.temperature;
 
 /**
- * Class for converting to Fahrenheit scale
+ * Class for converting to Kelvin scale
  */
 
-public class Fahrenheit implements Temperature {
+public class Kelvin implements Temperature {
+    private static final double T0 = 273.15;
+
     @Override
     public double fromCelsius(double param) {
-        return (param - 32) * 5 / 9;
+        return param - T0;
     }
 
     @Override
     public double toCelsius(double param) {
-        return param * 9 / 5 + 32;
+        return param + T0;
     }
 }

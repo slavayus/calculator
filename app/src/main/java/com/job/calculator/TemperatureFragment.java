@@ -13,6 +13,9 @@ import android.widget.TextView;
 
 import com.job.calculator.commands.temperature.Celsius;
 import com.job.calculator.commands.temperature.Fahrenheit;
+import com.job.calculator.commands.temperature.Kelvin;
+import com.job.calculator.commands.temperature.Rankin;
+import com.job.calculator.commands.temperature.Remyure;
 import com.job.calculator.commands.temperature.Temperature;
 
 /**
@@ -47,6 +50,9 @@ public class TemperatureFragment extends Fragment {
         mOperations = new Temperature[5];
         mOperations[0] = new Celsius();
         mOperations[1] = new Fahrenheit();
+        mOperations[2] = new Kelvin();
+        mOperations[3] = new Rankin();
+        mOperations[4] = new Remyure();
     }
 
     public void setUpListeners(View view) {
@@ -141,8 +147,7 @@ public class TemperatureFragment extends Fragment {
                 if ("".equals(mCurrentNumber) || "-".equals(mCurrentNumber)) {
                     mCurrentNumber = "0";
                 }
-                fromTextView.setText(mCurrentNumber);
-                toTextView.setText(String.valueOf(calculate()));
+                updateTextView(fromTextView, toTextView);
             }
         });
 
@@ -150,8 +155,7 @@ public class TemperatureFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 mCurrentNumber = "0";
-                fromTextView.setText(mCurrentNumber);
-                toTextView.setText(String.valueOf(calculate()));
+                updateTextView(fromTextView, toTextView);
             }
         });
 
@@ -162,8 +166,7 @@ public class TemperatureFragment extends Fragment {
                     if (mCurrentNumber.indexOf('-') == -1) {
                         mCurrentNumber = "-" + mCurrentNumber;
                     }
-                    fromTextView.setText(mCurrentNumber);
-                    toTextView.setText(String.valueOf(calculate()));
+                    updateTextView(fromTextView, toTextView);
                 }
             }
         });
@@ -173,8 +176,7 @@ public class TemperatureFragment extends Fragment {
             public void onClick(View v) {
                 if (mCurrentNumber.indexOf('-') != -1) {
                     mCurrentNumber = mCurrentNumber.substring(1, mCurrentNumber.length());
-                    fromTextView.setText(mCurrentNumber);
-                    toTextView.setText(String.valueOf(calculate()));
+                    updateTextView(fromTextView, toTextView);
                 }
             }
         });
@@ -192,8 +194,7 @@ public class TemperatureFragment extends Fragment {
                                     dialogInterface.dismiss();
                                     temperatureFromTextView.setText(mTemperatureTypes[i].split(" ")[1]);
                                     mOperationFrom = mOperations[i];
-                                    fromTextView.setText(mCurrentNumber);
-                                    toTextView.setText(String.valueOf(calculate()));
+                                    updateTextView(fromTextView, toTextView);
                                 }
                             }).
                             setCancelable(true).
@@ -203,7 +204,7 @@ public class TemperatureFragment extends Fragment {
             }
         });
 
-        TextView temperatureToTextView = view.findViewById(R.id.temperature_type_to);
+        final TextView temperatureToTextView = view.findViewById(R.id.temperature_type_to);
         temperatureToTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -214,10 +215,9 @@ public class TemperatureFragment extends Fragment {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
                                     dialogInterface.dismiss();
-                                    temperatureFromTextView.setText(mTemperatureTypes[i].split(" ")[1]);
+                                    temperatureToTextView.setText(mTemperatureTypes[i].split(" ")[1]);
                                     mOperationTo = mOperations[i];
-                                    fromTextView.setText(mCurrentNumber);
-                                    toTextView.setText(String.valueOf(calculate()));
+                                    updateTextView(fromTextView, toTextView);
                                 }
                             }).
                             setCancelable(true).
@@ -228,15 +228,21 @@ public class TemperatureFragment extends Fragment {
         });
     }
 
+    private void updateTextView(TextView fromTextView, TextView toTextView) {
+        fromTextView.setText(mCurrentNumber);
+        String text = calculate().toString();
+        toTextView.setText(text);
+    }
+
     private void doButtonListener(char c, TextView fromTextView, TextView toTextView) {
         appendChar(c);
         fromTextView.setText(mCurrentNumber);
-        toTextView.setText(String.valueOf(calculate()));
+        updateTextView(fromTextView, toTextView);
     }
 
-    private double calculate() {
-        double inCelsius = mOperationFrom.toCelsius(Double.parseDouble(mCurrentNumber));
-        return mOperationTo.fromCelsius(inCelsius);
+    private Double calculate() {
+        double inCelsius = mOperationFrom.fromCelsius(Double.parseDouble(mCurrentNumber));
+        return mOperationTo.toCelsius(inCelsius);
     }
 
     private void appendChar(char c) {
