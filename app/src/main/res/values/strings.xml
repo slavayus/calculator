@@ -38,4 +38,9 @@
     <string name="mminus_button">M-</string>
     <string name="change_theme">Сменить тему</string>
     <string name="calculate_temperature">Температура</string>
+    <string name="down_choose_temperature">Choose</string>
+    <string name="temperature_type_from">°C</string>
+    <string name="temperature_data_from">0</string>
+    <string name="temperature_data_to">32</string>
+    <string name="temperature_type_to">°F</string>
 </resources>

@@ -8,6 +8,7 @@
         <item name="changeColor">@drawable/ic_change_color_light</item>
         <item name="calculateTemperature">@drawable/ic_temperature_light</item>
         <item name="actionBarStyle">@style/MyActionBar</item>
+        <item name="chooseTemperatureButton">@drawable/ic_choose_temperature_light</item>
     </style>
 
     <style name="DarkTheme" parent="Theme.AppCompat.Light">
@@ -18,6 +19,7 @@
         <item name="changeColor">@drawable/ic_change_color_dark</item>
         <item name="calculateTemperature">@drawable/ic_temperature_dark</item>
         <item name="actionBarStyle">@style/MyActionBar</item>
+        <item name="chooseTemperatureButton">@drawable/ic_choose_temperature_dark</item>
     </style>
 
     <style name="MyActionBar" parent="Widget.AppCompat.ActionBar.Solid">
@@ -44,6 +46,11 @@
 
     <style name="ImageButton" parent="Button">
         <item name="android:src">?attr/backspaceButton</item>
+    </style>
+
+    <style name="ImageButtonChooseTemperature" parent="Button">
+        <item name="android:src">?attr/chooseTemperatureButton</item>
+        <item name="android:background">?attr/colorPrimaryDark</item>
     </style>
 
     <style name="Layout">
