@@ -37,4 +37,5 @@
     <string name="mplus_button">M+</string>
     <string name="mminus_button">M-</string>
     <string name="change_theme">Сменить тему</string>
+    <string name="calculate_temperature">Температура</string>
 </resources>

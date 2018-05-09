@@ -6,4 +6,10 @@
         android:icon="?attr/changeColor"
         android:title="@string/change_theme"
         app:showAsAction="always" />
+
+    <item
+        android:id="@+id/calculate_temperature"
+        android:icon="?attr/calculateTemperature"
+        android:title="@string/calculate_temperature"
+        app:showAsAction="ifRoom" />
 </menu>
