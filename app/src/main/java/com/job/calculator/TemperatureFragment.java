@@ -18,6 +18,10 @@ import com.job.calculator.commands.temperature.Rankin;
 import com.job.calculator.commands.temperature.Remyure;
 import com.job.calculator.commands.temperature.Temperature;
 
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+
 /**
  * Fragment for displaying temperature calculator
  */
@@ -29,6 +33,7 @@ public class TemperatureFragment extends Fragment {
     private Temperature mOperationTo;
     private String[] mTemperatureTypes;
     private Temperature[] mOperations;
+    private DecimalFormat mFormatter;
 
     @Nullable
     @Override
@@ -38,12 +43,20 @@ public class TemperatureFragment extends Fragment {
         mTemperatureTypes = getResources().getStringArray(R.array.temperature_types);
 
         createOperations();
-
+        initialiseFormatter();
         mOperationFrom = mOperations[0];
         mOperationTo = mOperations[1];
         setUpListeners(view);
 
         return view;
+    }
+
+    private void initialiseFormatter() {
+        mFormatter = new DecimalFormat("#.####");
+        mFormatter.setRoundingMode(RoundingMode.CEILING);
+        DecimalFormatSymbols sym = DecimalFormatSymbols.getInstance();
+        sym.setDecimalSeparator('.');
+        mFormatter.setDecimalFormatSymbols(sym);
     }
 
     private void createOperations() {
@@ -229,14 +242,14 @@ public class TemperatureFragment extends Fragment {
     }
 
     private void updateTextView(TextView fromTextView, TextView toTextView) {
-        fromTextView.setText(mCurrentNumber);
-        String text = calculate().toString();
-        toTextView.setText(text);
+        fromTextView.setText(Formatter.putComma(mCurrentNumber));
+        String text = mFormatter.format(calculate());
+        toTextView.setText(Formatter.putComma(text));
     }
 
     private void doButtonListener(char c, TextView fromTextView, TextView toTextView) {
         appendChar(c);
-        fromTextView.setText(mCurrentNumber);
+        fromTextView.setText(Formatter.putComma(mCurrentNumber));
         updateTextView(fromTextView, toTextView);
     }
 
