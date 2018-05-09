@@ -7,11 +7,11 @@ package com.job.calculator.commands.temperature;
 public class Rankin implements Temperature {
     @Override
     public double fromCelsius(double param) {
-        return param * 1.8 + 491.67;
+        return (param - 491.67) * 5 / 9;
     }
 
     @Override
     public double toCelsius(double param) {
-        return (param - 491.67) / 1.8;
+        return (param + 273.15) * 9 / 5;
     }
 }
