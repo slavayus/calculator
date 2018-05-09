@@ -1,9 +1,11 @@
 package com.job.calculator;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,17 +24,29 @@ public class TemperatureFragment extends Fragment {
     private String mCurrentNumber = "0";
     private Temperature mOperationFrom;
     private Temperature mOperationTo;
+    private String[] mTemperatureTypes;
+    private Temperature[] mOperations;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_temperature, container, false);
 
-        mOperationFrom = new Celsius();
-        mOperationTo = new Fahrenheit();
+        mTemperatureTypes = getResources().getStringArray(R.array.temperature_types);
+
+        createOperations();
+
+        mOperationFrom = mOperations[0];
+        mOperationTo = mOperations[1];
         setUpListeners(view);
 
         return view;
+    }
+
+    private void createOperations() {
+        mOperations = new Temperature[5];
+        mOperations[0] = new Celsius();
+        mOperations[1] = new Fahrenheit();
     }
 
     public void setUpListeners(View view) {
@@ -165,6 +179,53 @@ public class TemperatureFragment extends Fragment {
             }
         });
 
+        final TextView temperatureFromTextView = view.findViewById(R.id.temperature_type_from);
+        temperatureFromTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (getContext() != null) {
+                    new AlertDialog.Builder(getContext()).
+                            setTitle(R.string.choose_type).
+                            setSingleChoiceItems(mTemperatureTypes, -1, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    dialogInterface.dismiss();
+                                    temperatureFromTextView.setText(mTemperatureTypes[i].split(" ")[1]);
+                                    mOperationFrom = mOperations[i];
+                                    fromTextView.setText(mCurrentNumber);
+                                    toTextView.setText(String.valueOf(calculate()));
+                                }
+                            }).
+                            setCancelable(true).
+                            create().
+                            show();
+                }
+            }
+        });
+
+        TextView temperatureToTextView = view.findViewById(R.id.temperature_type_to);
+        temperatureToTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (getContext() != null) {
+                    new AlertDialog.Builder(getContext()).
+                            setTitle(R.string.choose_type).
+                            setSingleChoiceItems(mTemperatureTypes, -1, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    dialogInterface.dismiss();
+                                    temperatureFromTextView.setText(mTemperatureTypes[i].split(" ")[1]);
+                                    mOperationTo = mOperations[i];
+                                    fromTextView.setText(mCurrentNumber);
+                                    toTextView.setText(String.valueOf(calculate()));
+                                }
+                            }).
+                            setCancelable(true).
+                            create().
+                            show();
+                }
+            }
+        });
     }
 
     private void doButtonListener(char c, TextView fromTextView, TextView toTextView) {

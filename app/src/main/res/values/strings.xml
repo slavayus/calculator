@@ -43,4 +43,14 @@
     <string name="temperature_data_from">0</string>
     <string name="temperature_data_to">32</string>
     <string name="temperature_type_to">°F</string>
+    <string name="choose_type">Выберите величину</string>
+
+    <string-array name="temperature_types">
+        <item>Цельсий °C</item>
+        <item>Фаренгейт °F</item>
+        <item>Кельвин K</item>
+        <item>Ранкин °R</item>
+        <item>Реомер °Re</item>
+    </string-array>
+
 </resources>
