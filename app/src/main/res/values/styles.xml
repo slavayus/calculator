@@ -63,4 +63,9 @@
         <item name="android:textSize">@dimen/text_view_text_size</item>
         <item name="android:typeface">serif</item>
     </style>
+
+    <style name="TextView.Temperature">
+        <item name="android:textSize">@dimen/temperature_text_view_text_size</item>
+        <item name="android:maxLines">1</item>
+    </style>
 </resources>
