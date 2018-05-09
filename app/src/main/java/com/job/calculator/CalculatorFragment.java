@@ -1,8 +1,8 @@
 package com.job.calculator;
 
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -80,7 +80,7 @@ public class CalculatorFragment extends Fragment {
             case R.id.change_theme:
                 Log.d(TAG, "onOptionsItemSelected: in change theme");
                 if (getActivity() != null) {
-                    SharedPreferences preferences = getActivity().getPreferences(Context.MODE_PRIVATE);
+                    SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
                     int currentTheme = preferences.getInt(THEME, R.style.LightTheme);
                     SharedPreferences.Editor edit = preferences.edit();
                     edit.putInt(THEME, currentTheme == R.style.DarkTheme ? R.style.LightTheme : R.style.DarkTheme);
@@ -88,6 +88,9 @@ public class CalculatorFragment extends Fragment {
                     getActivity().recreate();
                     Log.d(TAG, "onOptionsItemSelected: theme changed");
                 }
+                return true;
+            case R.id.calculate_temperature:
+                startActivity(TemperatureActivity.newIntent(getActivity()));
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -97,7 +100,7 @@ public class CalculatorFragment extends Fragment {
     private void loadData() {
         mBuffer = new Buffer(0);
         if (getActivity() != null) {
-            SharedPreferences preferences = getActivity().getPreferences(Context.MODE_PRIVATE);
+            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
             mBuffer.save(Double.parseDouble(preferences.getString(BUFFER, "0")));
             dataInTextView = preferences.getString(TASKS, "");
             result = Double.parseDouble(preferences.getString(RESULT, "0"));
@@ -110,7 +113,7 @@ public class CalculatorFragment extends Fragment {
     public void onStop() {
         super.onStop();
         if (getActivity() != null) {
-            SharedPreferences preferences = getActivity().getPreferences(Context.MODE_PRIVATE);
+            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
             SharedPreferences.Editor edit = preferences.edit();
             edit.putString(BUFFER, String.valueOf(mBuffer.read()));
             edit.putString(TASKS, dataInTextView);
