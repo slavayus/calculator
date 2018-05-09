@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">calculator</string>
+    <string name="app_name">Калькулятор</string>
     <string name="plus_button">+</string>
     <string name="clear_last_task_button">C</string>
     <string name="clear_last_char_button">L</string>
@@ -31,4 +31,26 @@
     <string name="ctg_button">ctg</string>
     <string name="sqrt_button">\u221a</string>
     <string name="degree_switch_button">deg</string>
+    <string name="ms_button">MS</string>
+    <string name="mr_button">MR</string>
+    <string name="mc_button">MC</string>
+    <string name="mplus_button">M+</string>
+    <string name="mminus_button">M-</string>
+    <string name="change_theme">Сменить тему</string>
+    <string name="calculate_temperature">Температура</string>
+    <string name="down_choose_temperature">Choose</string>
+    <string name="temperature_type_from">°C</string>
+    <string name="temperature_data_from">0</string>
+    <string name="temperature_data_to">32</string>
+    <string name="temperature_type_to">°F</string>
+    <string name="choose_type">Выберите величину</string>
+
+    <string-array name="temperature_types">
+        <item>Цельсий °C</item>
+        <item>Фаренгейт °F</item>
+        <item>Кельвин K</item>
+        <item>Ранкин °R</item>
+        <item>Реомюр °Re</item>
+    </string-array>
+
 </resources>

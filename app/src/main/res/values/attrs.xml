@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="backspaceButton" format="reference"/>
+    <attr name="changeColor" format="reference"/>
+    <attr name="calculateTemperature" format="reference"/>
+    <attr name="chooseTemperatureButton" format="reference"/>
+</resources>

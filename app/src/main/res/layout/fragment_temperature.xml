@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/Layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:weightSum="4">
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <TextView
+            android:id="@+id/temperature_type_from"
+            style="@style/TextView.Temperature"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:text="@string/temperature_type_from"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageButton
+            style="@style/ImageButtonChooseTemperature"
+            android:layout_width="16dp"
+            android:layout_height="24dp"
+            android:contentDescription="@string/down_choose_temperature"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/temperature_type_from"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/temperature_data_from"
+            style="@style/TextView.Temperature"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:text="@string/temperature_data_from"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </android.support.constraint.ConstraintLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="?attr/colorPrimary" />
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <TextView
+            android:id="@+id/temperature_type_to"
+            style="@style/TextView.Temperature"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:text="@string/temperature_type_to"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageButton
+            style="@style/ImageButtonChooseTemperature"
+            android:layout_width="16dp"
+            android:layout_height="24dp"
+            android:contentDescription="@string/down_choose_temperature"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/temperature_type_to"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/temperature_data_to"
+            style="@style/TextView.Temperature"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:text="@string/temperature_data_to"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </android.support.constraint.ConstraintLayout>
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/table_layout_height"
+        android:layout_weight="2"
+        android:shrinkColumns="*"
+        android:stretchColumns="*">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <Button
+                android:id="@+id/seven_button"
+                style="@style/Button"
+                android:text="@string/seven_button" />
+
+            <Button
+                android:id="@+id/eight_button"
+                style="@style/Button"
+                android:text="@string/eight_button" />
+
+            <Button
+                android:id="@+id/nine_button"
+                style="@style/Button"
+                android:text="@string/nine_button" />
+
+            <Button
+                android:id="@+id/clear_all_tasks_button"
+                style="@style/Button"
+                android:text="@string/clear_all_tasks_button" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <Button
+                android:id="@+id/four_button"
+                style="@style/Button"
+                android:text="@string/four_button" />
+
+            <Button
+                android:id="@+id/five_button"
+                style="@style/Button"
+                android:text="@string/five_button" />
+
+            <Button
+                android:id="@+id/six_button"
+                style="@style/Button"
+                android:text="@string/six_button" />
+
+            <ImageButton
+                android:id="@+id/clear_last_char_button"
+                style="@style/ImageButton"
+                android:contentDescription="@string/clear_last_char_button" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <Button
+                android:id="@+id/one_button"
+                style="@style/Button"
+                android:text="@string/one_button" />
+
+            <Button
+                android:id="@+id/two_button"
+                style="@style/Button"
+                android:text="@string/two_button" />
+
+            <Button
+                android:id="@+id/three_button"
+                style="@style/Button"
+                android:text="@string/three_button" />
+
+            <Button
+                android:id="@+id/plus_button"
+                style="@style/Button"
+                android:text="@string/plus_button" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <Button
+                android:id="@+id/zero_button"
+                style="@style/Button"
+                android:layout_span="2"
+                android:text="@string/zero_button" />
+
+            <Button
+                android:id="@+id/dot_button"
+                style="@style/Button"
+                android:text="@string/dot_button" />
+
+            <Button
+                android:id="@+id/minus_button"
+                style="@style/Button"
+                android:text="@string/minus_button" />
+        </TableRow>
+    </TableLayout>
+</LinearLayout>

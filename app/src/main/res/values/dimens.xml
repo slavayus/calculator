@@ -6,4 +6,7 @@
     <dimen name="button_layout_margin">0dp</dimen>
     <dimen name="table_layout_height">0dp</dimen>
     <dimen name="text_view_text_size">45dp</dimen>
+    <dimen name="bar_height">20dp</dimen>
+    <dimen name="temperature_linear_layout_height">0dp</dimen>
+    <dimen name="temperature_text_view_text_size">30sp</dimen>
 </resources>

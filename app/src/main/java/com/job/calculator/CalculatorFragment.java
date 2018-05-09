@@ -1,11 +1,17 @@
 package com.job.calculator;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.method.ScrollingMovementMethod;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -27,6 +33,7 @@ import com.job.calculator.commands.two.PercentCommand;
 import com.job.calculator.commands.two.PlusCommand;
 import com.job.calculator.commands.two.RandomExponentCommand;
 
+import static com.job.calculator.CalculatorActivity.THEME;
 import static com.job.calculator.Formatter.getCurrentNumberAsNumber;
 
 /**
@@ -35,41 +42,92 @@ import static com.job.calculator.Formatter.getCurrentNumberAsNumber;
 
 public class CalculatorFragment extends Fragment {
     private static final String TAG = "CalculatorFragment";
+    private static final String BUFFER = "BUFFER";
+    private static final String TASKS = "TASKS";
+    private static final String RESULT = "RESULT";
     private static final String MATH_PI = "3.141592";
     private static final String MATH_E = "2.718281";
-    private static final String TASKS = "TASKS";
     private static final int MAX_DIGITS = 10;
     private String currentNumber = "";
     private String dataInTextView = "";
     private double result;
     private CommandWithTwoArgument command;
     private boolean isThereResult;
+    private Buffer mBuffer;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_calculator, container, false);
 
-        if (savedInstanceState != null) {
-            dataInTextView = savedInstanceState.getString(TASKS);
-        }
+        loadData();
 
         setClickListeners(view);
 
+        setHasOptionsMenu(true);
         return view;
     }
 
     @Override
-    public void onSaveInstanceState(@NonNull Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putString(TASKS, dataInTextView);
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.calculator_fragment, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.change_theme:
+                Log.d(TAG, "onOptionsItemSelected: in change theme");
+                if (getActivity() != null) {
+                    SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+                    int currentTheme = preferences.getInt(THEME, R.style.LightTheme);
+                    SharedPreferences.Editor edit = preferences.edit();
+                    edit.putInt(THEME, currentTheme == R.style.DarkTheme ? R.style.LightTheme : R.style.DarkTheme);
+                    edit.apply();
+                    getActivity().recreate();
+                    Log.d(TAG, "onOptionsItemSelected: theme changed");
+                }
+                return true;
+            case R.id.calculate_temperature:
+                startActivity(TemperatureActivity.newIntent(getActivity()));
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void loadData() {
+        mBuffer = new Buffer(0);
+        if (getActivity() != null) {
+            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+            mBuffer.save(Double.parseDouble(preferences.getString(BUFFER, "0")));
+            dataInTextView = preferences.getString(TASKS, "");
+            result = Double.parseDouble(preferences.getString(RESULT, "0"));
+            isThereResult = true;
+            Log.d(TAG, "loadData: data loaded");
+        }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (getActivity() != null) {
+            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+            SharedPreferences.Editor edit = preferences.edit();
+            edit.putString(BUFFER, String.valueOf(mBuffer.read()));
+            edit.putString(TASKS, dataInTextView);
+            edit.putString(RESULT, String.valueOf(result));
+            edit.apply();
+            Log.d(TAG, "onDestroy: data saved");
+        }
     }
 
     public void setClickListeners(final View view) {
         final TextView textView = view.findViewById(R.id.textView);
 
         textView.setMovementMethod(new ScrollingMovementMethod());
-        textView.append(dataInTextView);
+        updateTextView(textView);
 
         view.findViewById(R.id.zero_button).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -188,7 +246,7 @@ public class CalculatorFragment extends Fragment {
             }
         });
 
-        Button button = view.findViewById(R.id.square_button);
+        final Button button = view.findViewById(R.id.square_button);
         if (button != null) {
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -255,6 +313,42 @@ public class CalculatorFragment extends Fragment {
                     currentNumber = MATH_E;
                     isThereResult = command != null;
                     updateTextView(textView);
+                }
+            });
+
+            view.findViewById(R.id.ms_button).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mBuffer.save(result);
+                }
+            });
+
+            view.findViewById(R.id.mr_button).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    result = mBuffer.read();
+                    updateTextView(textView);
+                }
+            });
+
+            view.findViewById(R.id.mc_button).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mBuffer.clear();
+                }
+            });
+
+            view.findViewById(R.id.mplus_button).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mBuffer.plus(result);
+                }
+            });
+
+            view.findViewById(R.id.mminus_button).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mBuffer.minus(result);
                 }
             });
         }
@@ -334,7 +428,7 @@ public class CalculatorFragment extends Fragment {
     }
 
     private void doOperation(CommandWithTwoArgument comm, int addToCurrentNumber, TextView textView) {
-        if (isThereResult) {
+        if (command == null && isThereResult) {
             command = comm;
         }
         calculateResult(getCurrentNumberAsNumber(currentNumber) + addToCurrentNumber);
