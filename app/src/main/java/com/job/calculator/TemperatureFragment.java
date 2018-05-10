@@ -195,6 +195,7 @@ public class TemperatureFragment extends Fragment {
         });
 
         final TextView temperatureFromTextView = view.findViewById(R.id.temperature_type_from);
+        final TextView temperatureDescriptionFromTextView = view.findViewById(R.id.temperature_type_description_from);
         temperatureFromTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -206,6 +207,7 @@ public class TemperatureFragment extends Fragment {
                                 public void onClick(DialogInterface dialogInterface, int i) {
                                     dialogInterface.dismiss();
                                     temperatureFromTextView.setText(mTemperatureTypes[i].split(" ")[1]);
+                                    temperatureDescriptionFromTextView.setText(mTemperatureTypes[i].split(" ")[0]);
                                     mOperationFrom = mOperations[i];
                                     updateTextView(fromTextView, toTextView);
                                 }
@@ -218,6 +220,7 @@ public class TemperatureFragment extends Fragment {
         });
 
         final TextView temperatureToTextView = view.findViewById(R.id.temperature_type_to);
+        final TextView temperatureDescriptionToTextView = view.findViewById(R.id.temperature_type_description_to);
         temperatureToTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -229,6 +232,7 @@ public class TemperatureFragment extends Fragment {
                                 public void onClick(DialogInterface dialogInterface, int i) {
                                     dialogInterface.dismiss();
                                     temperatureToTextView.setText(mTemperatureTypes[i].split(" ")[1]);
+                                    temperatureDescriptionToTextView.setText(mTemperatureTypes[i].split(" ")[0]);
                                     mOperationTo = mOperations[i];
                                     updateTextView(fromTextView, toTextView);
                                 }

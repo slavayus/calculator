@@ -42,6 +42,16 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/temperature_type_description_from"
+            style="@style/TextView.Temperature.Description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:text="@string/temperature_description_from"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/temperature_data_from" />
     </android.support.constraint.ConstraintLayout>
 
     <View
@@ -84,6 +94,16 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/temperature_type_description_to"
+            style="@style/TextView.Temperature.Description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:text="@string/temperature_description_to"
+            app:layout_constraintTop_toBottomOf="@+id/temperature_data_to" />
     </android.support.constraint.ConstraintLayout>
 
     <TableLayout

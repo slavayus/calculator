@@ -9,4 +9,5 @@
     <dimen name="bar_height">20dp</dimen>
     <dimen name="temperature_linear_layout_height">0dp</dimen>
     <dimen name="temperature_text_view_text_size">30sp</dimen>
+    <dimen name="temperature_text_view_description_text_size">15sp</dimen>
 </resources>

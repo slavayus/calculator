@@ -44,6 +44,8 @@
     <string name="temperature_data_to">32</string>
     <string name="temperature_type_to">°F</string>
     <string name="choose_type">Выберите величину</string>
+    <string name="temperature_description_to">Фаренгейт</string>
+    <string name="temperature_description_from">Цельсий</string>
 
     <string-array name="temperature_types">
         <item>Цельсий °C</item>

@@ -68,4 +68,8 @@
         <item name="android:textSize">@dimen/temperature_text_view_text_size</item>
         <item name="android:maxLines">1</item>
     </style>
+
+    <style name="TextView.Temperature.Description">
+        <item name="android:textSize">@dimen/temperature_text_view_description_text_size</item>
+    </style>
 </resources>
