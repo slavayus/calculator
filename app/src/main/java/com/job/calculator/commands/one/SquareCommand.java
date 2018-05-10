@@ -10,13 +10,24 @@ public class SquareCommand implements CommandWIthSingleArgument {
     private double result;
     private double currentNumber;
 
+    /**
+     * Calculates the square of an argument
+     *
+     * @param argument the argument which square will be calculated
+     * @return square of the argument
+     */
     @Override
-    public double execute(double currentNumber) {
-        this.currentNumber = currentNumber;
-        this.result = Math.pow(currentNumber, 2);
+    public double execute(double argument) {
+        this.currentNumber = argument;
+        this.result = Math.pow(argument, 2);
         return result;
     }
 
+    /**
+     * Formats the output of the command
+     *
+     * @return formatted result
+     */
     @Override
     public String toString() {
         return (Math.abs(currentNumber) == Double.POSITIVE_INFINITY ? currentNumber : putComma(String.valueOf(currentNumber))) +

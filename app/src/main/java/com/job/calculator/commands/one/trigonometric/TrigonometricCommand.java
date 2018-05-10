@@ -9,6 +9,12 @@ import com.job.calculator.commands.one.CommandWIthSingleArgument;
 abstract class TrigonometricCommand implements CommandWIthSingleArgument {
     boolean inDegrees;
 
+    /**
+     * Constructor with the argument which shows how to calculate the trigonometric command .
+     *
+     * @param inDegrees true - it will be calculated in degrees
+     *                  false - it will be calculated in radians
+     */
     TrigonometricCommand(boolean inDegrees) {
         this.inDegrees = inDegrees;
     }
