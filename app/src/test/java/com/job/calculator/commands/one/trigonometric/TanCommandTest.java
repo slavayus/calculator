@@ -8,7 +8,7 @@ import java.lang.reflect.Field;
 import static org.junit.Assert.assertEquals;
 
 /**
- * Test for the CosCommand class
+ * Test for the TanCommand class
  */
 public class TanCommandTest {
     private TanCommand tanCommandInDegrees;
