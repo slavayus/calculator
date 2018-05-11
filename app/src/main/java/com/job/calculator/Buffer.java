@@ -5,7 +5,7 @@ package com.job.calculator;
  */
 
 final class Buffer {
-    private double data;
+    private double mData;
 
     /**
      * Constructor with argument.
@@ -13,7 +13,7 @@ final class Buffer {
      * @param data default value
      */
     Buffer(double data) {
-        this.data = data;
+        this.mData = data;
     }
 
     /**
@@ -22,7 +22,7 @@ final class Buffer {
      * @param data a new value for saving
      */
     void save(double data) {
-        this.data = data;
+        this.mData = data;
     }
 
     /**
@@ -31,14 +31,14 @@ final class Buffer {
      * @return stored value
      */
     double read() {
-        return data;
+        return mData;
     }
 
     /**
      * Clear the stored value. Sets the value to 0.
      */
     void clear() {
-        data = 0;
+        mData = 0;
     }
 
     /**
@@ -47,7 +47,7 @@ final class Buffer {
      * @param data a value for adding
      */
     void plus(double data) {
-        this.data += data;
+        this.mData += data;
     }
 
     /**
@@ -56,6 +56,6 @@ final class Buffer {
      * @param data a value for subtracting
      */
     void minus(double data) {
-        this.data -= data;
+        this.mData -= data;
     }
 }
