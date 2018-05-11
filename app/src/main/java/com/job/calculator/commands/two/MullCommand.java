@@ -9,13 +9,13 @@ public class MullCommand implements CommandWithTwoArgument {
     /**
      * Multiplies the first argument by the second.
      *
-     * @param firstArg  first argument for the multiplication
-     * @param secondArg second argument for the multiplication
+     * @param multiplicand  first argument for the multiplication
+     * @param multiplier second argument for the multiplication
      * @return the result of multiplication
      */
     @Override
-    public double execute(double firstArg, double secondArg) {
-        return firstArg * secondArg;
+    public double execute(double multiplicand, double multiplier) {
+        return multiplicand * multiplier;
     }
 
     /**

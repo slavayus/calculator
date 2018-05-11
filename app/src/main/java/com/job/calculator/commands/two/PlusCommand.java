@@ -9,13 +9,13 @@ public class PlusCommand implements CommandWithTwoArgument {
     /**
      * Adds two arguments.
      *
-     * @param firstArg  first argument for the addition
-     * @param secondArg second argument for the addition
+     * @param firstNumber  first argument for the addition
+     * @param secondNumber second argument for the addition
      * @return the result of addition
      */
     @Override
-    public double execute(double firstArg, double secondArg) {
-        return firstArg + secondArg;
+    public double execute(double firstNumber, double secondNumber) {
+        return firstNumber + secondNumber;
     }
 
     /**

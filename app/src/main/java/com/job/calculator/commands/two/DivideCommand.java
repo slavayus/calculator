@@ -9,13 +9,13 @@ public class DivideCommand implements CommandWithTwoArgument {
     /**
      * Divides the first argument into the second.
      *
-     * @param firstArg  first argument that will be divided
-     * @param secondArg second argument for which we divide
+     * @param dividend first argument that will be divided
+     * @param divider  second argument for which we divide
      * @return the result of dividing
      */
     @Override
-    public double execute(double firstArg, double secondArg) {
-        return firstArg / secondArg;
+    public double execute(double dividend, double divider) {
+        return dividend / divider;
     }
 
     /**
