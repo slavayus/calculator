@@ -447,7 +447,9 @@ public class CalculatorFragment extends Fragment {
         if (command == null && isThereResult) {
             command = comm;
         }
-        calculateResult(getCurrentNumberAsNumber(currentNumber) + addToCurrentNumber);
+        if (!"".equals(currentNumber)) {
+            calculateResult(getCurrentNumberAsNumber(currentNumber) + addToCurrentNumber);
+        }
         command = comm;
         updateStateAfterOperation(textView);
     }
