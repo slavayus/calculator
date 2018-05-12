@@ -51,6 +51,10 @@ public class TemperatureFragment extends Fragment {
         return view;
     }
 
+
+    /**
+     * Initialise formatter for outputting data to TextView {@link this.updateTextView()}
+     */
     private void initialiseFormatter() {
         mFormatter = new DecimalFormat("#.####");
         mFormatter.setRoundingMode(RoundingMode.CEILING);
@@ -59,6 +63,9 @@ public class TemperatureFragment extends Fragment {
         mFormatter.setDecimalFormatSymbols(sym);
     }
 
+    /**
+     * Instantiates types of the temperature scales
+     */
     private void createOperations() {
         mOperations = new Temperature[5];
         mOperations[0] = new Celsius();
@@ -68,6 +75,11 @@ public class TemperatureFragment extends Fragment {
         mOperations[4] = new Remyure();
     }
 
+    /**
+     * Sets up listeners for buttons
+     *
+     * @param view where the buttons are located
+     */
     public void setUpListeners(View view) {
         final TextView fromTextView = view.findViewById(R.id.temperature_data_from);
         final TextView toTextView = view.findViewById(R.id.temperature_data_to);
@@ -245,24 +257,55 @@ public class TemperatureFragment extends Fragment {
         });
     }
 
+    /**
+     * Update text view
+     *
+     * @param fromTextView TextView where get the data
+     * @param toTextView   TextView where put the result
+     */
     private void updateTextView(TextView fromTextView, TextView toTextView) {
         fromTextView.setText(Formatter.putComma(mCurrentNumber));
         String text = mFormatter.format(calculate());
         toTextView.setText(Formatter.putComma(text));
     }
 
+    /**
+     * Listener for buttons. Add a new char to current number. Calculate and update the TextView.
+     *
+     * @param c            new symbol according on typing the digit buttons
+     * @param fromTextView TextView where get the data
+     * @param toTextView   TextView where put the result
+     */
     private void doButtonListener(char c, TextView fromTextView, TextView toTextView) {
         appendChar(c);
         fromTextView.setText(Formatter.putComma(mCurrentNumber));
         updateTextView(fromTextView, toTextView);
     }
 
+    /**
+     * Calculate the new temperature
+     *
+     * @return the new temperature
+     */
     private Double calculate() {
+        if (mOperationTo == null || mOperationFrom == null || mCurrentNumber == null || "".equals(mCurrentNumber)) {
+            return 0d;
+        }
+
         double inCelsius = mOperationFrom.fromCelsius(Double.parseDouble(mCurrentNumber));
         return mOperationTo.toCelsius(inCelsius);
     }
 
+
+    /**
+     * Add a new char to current number.
+     *
+     * @param c new symbol according on typing the digit buttons
+     */
     private void appendChar(char c) {
+        if (!(c >= '0' && c <= '9' || c == '.')) {
+            return;
+        }
         if ("0".equals(mCurrentNumber) && c != '.') {
             mCurrentNumber = String.valueOf(c);
         } else {

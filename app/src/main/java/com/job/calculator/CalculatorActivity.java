@@ -8,6 +8,11 @@ import android.support.v4.app.Fragment;
 
 public class CalculatorActivity extends SingleFragmentActivity {
 
+    /**
+     * Creates a new {@link CalculatorFragment}
+     *
+     * @return a new CalculatorFragment
+     */
     @Override
     protected Fragment createFragment() {
         return new CalculatorFragment();

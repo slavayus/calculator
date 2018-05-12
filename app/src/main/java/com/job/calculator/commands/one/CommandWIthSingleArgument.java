@@ -5,5 +5,12 @@ package com.job.calculator.commands.one;
  */
 
 public interface CommandWIthSingleArgument {
-    double execute(double currentNumber);
+
+    /**
+     * Execute the operation with the received data
+     *
+     * @param argument the argument for the operation
+     * @return result of operation
+     */
+    double execute(double argument);
 }

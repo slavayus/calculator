@@ -5,5 +5,13 @@ package com.job.calculator.commands.two;
  */
 
 public interface CommandWithTwoArgument {
-    double execute(double result, double currentNumber);
+
+    /**
+     * Execute the operation with the received data
+     *
+     * @param firstArg  the first argument for the operation
+     * @param secondArg the second argument for the operation
+     * @return result of operation
+     */
+    double execute(double firstArg, double secondArg);
 }

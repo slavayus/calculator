@@ -109,6 +109,10 @@ public class CalculatorFragment extends Fragment {
         }
     }
 
+    /**
+     * Fragment lifecycle method.
+     * Saves the result in SharedPreferences
+     */
     @Override
     public void onStop() {
         super.onStop();
@@ -123,6 +127,11 @@ public class CalculatorFragment extends Fragment {
         }
     }
 
+    /**
+     * Sets up listeners for buttons
+     *
+     * @param view where the buttons are located
+     */
     public void setClickListeners(final View view) {
         final TextView textView = view.findViewById(R.id.textView);
 
@@ -416,6 +425,13 @@ public class CalculatorFragment extends Fragment {
 
     }
 
+    /**
+     * Calculate result with new data. Execute commands with one arguments
+     *
+     * @param comm     the command which will calculate
+     * @param textView the {@link TextView} where result will be displayed
+     * @see CommandWIthSingleArgument
+     */
     private void calculateSingleArgument(CommandWIthSingleArgument comm, TextView textView) {
         command = null;
         isThereResult = true;
@@ -431,11 +447,19 @@ public class CalculatorFragment extends Fragment {
         if (command == null && isThereResult) {
             command = comm;
         }
-        calculateResult(getCurrentNumberAsNumber(currentNumber) + addToCurrentNumber);
+        if (!"".equals(currentNumber)) {
+            calculateResult(getCurrentNumberAsNumber(currentNumber) + addToCurrentNumber);
+        }
         command = comm;
         updateStateAfterOperation(textView);
     }
 
+    /**
+     * Listener for buttons. Add a new char to current number.
+     *
+     * @param c        new symbol according on typing the digit buttons
+     * @param textView the {@link TextView} where current number will be updated
+     */
     private void changeCurrentNumberAndUpdateState(char c, TextView textView) {
         if ("0".equals(currentNumber) && c != '.') {
             currentNumber = String.valueOf(c);
@@ -448,25 +472,47 @@ public class CalculatorFragment extends Fragment {
         updateTextView(textView);
     }
 
+    /**
+     * Updates the {@link TextView} with new data.
+     *
+     * @param textView which will be updated.
+     */
     private void updateStateAfterOperation(TextView textView) {
         currentNumber = "";
         textView.setText("");
         textView.append(Formatter.getAsNewResult(dataInTextView, result, command));
     }
 
+    /**
+     * Check if the degree button is pressed.
+     *
+     * @param view where the degree button is located
+     * @return true - it will be calculated in degrees
+     * false - it will be calculated in radians
+     */
     private boolean inDegrees(View view) {
         Switch degreeSwitcher = view.findViewById(R.id.degree_switch_button);
         return degreeSwitcher.isChecked();
     }
 
 
+    /**
+     * Executes the selected command
+     *
+     * @param number current number which will be calculated
+     */
     private void calculateResult(double number) {
         result = command != null ? command.execute(result, number) : number;
         isThereResult = true;
     }
 
+    /**
+     * Updates the {@link TextView} with new data.
+     *
+     * @param textView which will be updated.
+     */
     private void updateTextView(TextView textView) {
         textView.setText("");
-        textView.append(Formatter.appentText(dataInTextView, result, command, currentNumber));
+        textView.append(Formatter.appendText(dataInTextView, result, command, currentNumber));
     }
 }
