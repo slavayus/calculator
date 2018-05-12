@@ -288,6 +288,10 @@ public class TemperatureFragment extends Fragment {
      * @return the new temperature
      */
     private Double calculate() {
+        if (mOperationTo == null || mOperationFrom == null || mCurrentNumber == null || "".equals(mCurrentNumber)) {
+            return 0d;
+        }
+
         double inCelsius = mOperationFrom.fromCelsius(Double.parseDouble(mCurrentNumber));
         return mOperationTo.toCelsius(inCelsius);
     }
@@ -299,6 +303,9 @@ public class TemperatureFragment extends Fragment {
      * @param c new symbol according on typing the digit buttons
      */
     private void appendChar(char c) {
+        if (!(c >= '0' && c <= '9' || c == '.')) {
+            return;
+        }
         if ("0".equals(mCurrentNumber) && c != '.') {
             mCurrentNumber = String.valueOf(c);
         } else {
